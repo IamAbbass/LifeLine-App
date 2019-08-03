@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+import 'dart:async';
 
 void main() => runApp(MyApp());
 
@@ -34,6 +36,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    _controller = VideoPlayerController.network(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    );
+
+    _initializeVideoPlayerFuture = _controller.initialize();
   }
 
   void _onItemTapped(int index) {
@@ -50,6 +57,16 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedChoice = choice;
     });
+  }
+
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
+
+  @override
+  void dispose() {
+    // Ensure disposing of the VideoPlayerController to free up resources.
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -89,6 +106,21 @@ class _MyHomePageState extends State<MyHomePage> {
         //pageSnapping: false,
         scrollDirection: Axis.vertical,
         children: [
+          Container(
+            child: FutureBuilder(
+              future: _initializeVideoPlayerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
           Container(
             color: Colors.black,
             child: Center(
@@ -153,8 +185,17 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed ,
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow,),
           tooltip: "Create Video",
+          onPressed: () {
+            setState(() {
+              if (_controller.value.isPlaying) {
+                _controller.pause();
+              } else {
+                _controller.play();
+              }
+            });
+          },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -184,5 +225,3 @@ const List<Choice> choices = const <Choice>[
   const Choice(title: 'Nearby', icon: Icons.short_text),
   const Choice(title: 'ChitChat', icon: Icons.short_text),
 ];
-
-
