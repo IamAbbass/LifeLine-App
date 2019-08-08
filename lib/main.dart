@@ -31,17 +31,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
+  int currentPageValue;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    var currentPageValue = 0.0;
+
+
+
+    _pageController.addListener(() {
+      setState(() {
+        currentPageValue = _pageController.page;
+      });
+    });
+
     _controller = VideoPlayerController.network(
       'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
     );
-
     _initializeVideoPlayerFuture = _controller.initialize();
   }
+
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -68,6 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
     _controller.dispose();
     super.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +115,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      /*
       body: PageView(
         controller: _pageController,
-        //pageSnapping: false,
         scrollDirection: Axis.vertical,
+        physics: BouncingScrollPhysics(),
+        //pageSnapping: false,
         children: [
           Container(
             child: FutureBuilder(
@@ -159,6 +175,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+      ),
+      */
+      body: PageView.builder(
+        itemBuilder: (context, position) {
+          return Container(
+            color: position % 2 == 0 ? Colors.pink : Colors.cyan,
+          );
+        },
+        controller: _pageController,
+        scrollDirection: Axis.vertical,
+        physics: BouncingScrollPhysics(),
+        //pageSnapping: false,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -225,3 +253,5 @@ const List<Choice> choices = const <Choice>[
   const Choice(title: 'Nearby', icon: Icons.short_text),
   const Choice(title: 'ChitChat', icon: Icons.short_text),
 ];
+
+
