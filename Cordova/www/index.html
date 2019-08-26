@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+     <meta name = "viewport" content = "width = device-width, initial-scale = 1,
+        maximum-scale = 1, minimum-scale = 1, user-scalable = no, minimal-ui" />
+     <meta name = "apple-mobile-web-app-capable" content = "yes" />
+     <meta name = "apple-mobile-web-app-status-bar-style" content = "black" />
+     <title>Live App</title>
+     <link rel = "stylesheet" href ="css/style.css" />
+     <link rel = "stylesheet" href ="css/framework7.ios.min.css" />
+     <link rel = "stylesheet" href ="css/framework7.ios.colors.min.css" />
+
+     <link rel="stylesheet" type="text/css" href="fonts/css/fontawesome-all.min.css">
+     <link href="https://fonts.googleapis.com/css?family=Gugi" rel="stylesheet">
+
+     <!--
+     <link rel="stylesheet" type="text/css" href="styles/framework.css">
+     -->
+     <!-- emp app track -->
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyXh0c0m6Sjjk2AHG5BuijDPmoQUoloSI&libraries=places"></script>
+  </head>
+
+   <body>
+      <div class="pre-loader"></div>
+
+      <!-- play pause icons -->
+      <div id="control_icons">
+        <img src="" alt="" />
+      </div>
+
+      <div class="my_menu">
+        <div class="menu_expand">
+           <!--<img src="img/menu-expand.png" alt="" />-->
+           <i class="fa fa-ellipsis-h"></i>
+        </div>
+
+        <div class="menu_list">
+           <!--<div class="menu_item menu_item_active"><img src="img/home.png" alt="" /></div>
+           <div class="menu_item"><img src="img/update.png" alt="" /></div>
+           <div class="menu_item"><img src="img/programs.png" alt="" /></div>
+           <div class="menu_item"><img src="img/short-flims.png" alt="" /></div>
+           <div class="menu_item"><img src="img/documentry.png" alt="" /></div>
+           <div class="menu_item"><img src="img/vlog.png" alt="" /></div>
+           <div class="menu_item"><img src="img/memes.png" alt="" /></div>
+           <div class="menu_item"><img src="img/cartoons.png" alt="" /></div>
+           <div class="menu_item"><img src="img/radio.png" alt="" /></div>
+           <div class="menu_item"><img src="img/blog.png" alt="" /></div>
+           <div class="menu_item"><img src="img/article.png" alt="" /></div>
+           <div class="menu_item"><img src="img/review.png" alt="" /></div>-->
+           <div class="menu_item nav_home menu_item_active"><i class="fa fa-home"></i><span>Home</span></div>
+           <div class="menu_item nav_updates"><i class="fa fa-bolt"></i><span>Updates</span></div>
+           <div class="menu_item nav_programs"><i class="fa fa-clock"></i><span>Programs</span></div>
+           <div class="menu_item nav_short_flims"><i class="fa fa-play-circle"></i><span>Short Flims</span></div>
+           <div class="menu_item nav_documentry"><i class="fa fa-book"></i><span>Documentry</span></div>
+           <div class="menu_item nav_vlogs"><i class="fa fa-camera"></i><span>Vlogs</span></div>
+           <div class="menu_item nav_memes"><i class="fa fa-child"></i><span>Memes</span></div>
+           <div class="menu_item nav_cartoon"><i class="fa fa-lightbulb"></i><span>Cartoons</span></div>
+           <div class="menu_item nav_radio"><i class="fa fa-microphone"></i><span>Radio</span></div>
+           <div class="menu_item nav_blogs"><i class="fa fa-road"></i><span>Blogs</span></div>
+           <div class="menu_item nav_article"><i class="fa fa-newspaper"></i><span>Article</span></div>
+           <div class="menu_item nav_review"><i class="fa fa-edit"></i><span>Review</span></div>
+           <div class="menu_item nav_mugic"><i class="fa fa-music"></i><span>Mugic</span></div>
+           <div class="menu_item nav_pictures"><i class="fa fa-image"></i><span>Pictures</span></div>
+           <div class="menu_item nav_search"><i class="fa fa-map-marker"></i><span>Near By</span></div>
+           <div class="menu_item nav_lock"><i class="fa fa-lock"></i><span>Chit Chat</span></div>
+           <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="live_app_page page_home_videos">
+
+
+        <div class="video_type">
+          <p class="video_type_text">
+            <span class="category set_category category_active"><span>Following</span> <!-- <img src="img/noti-small.png" alt="" /> --></span>
+            <span class="font-8">|</span>
+            <span class="category set_category"><span>For You</span></span>
+            <span class="font-8">|</span>
+            <span class="category set_category"><span>Near By</span></span>
+          </p>
+        </div>
+
+        <div class="video_category">
+          <p class="video_category_text">
+            <span class="category btn_volume"><i class="fa fa-bell-slash"></i> <span></span></span>
+            <span class="category btn_replay"><i class="fa fa-history"></i> <span></span></span>
+          </p>
+        </div>
+
+        <div class = "views">
+           <div class = "view view-main">
+              <div class = "pages">
+                 <div data-page = "home" class = "page navbar-fixed">
+
+                    <!--
+                    <div class = "navbar">
+                       <div class = "navbar-inner">
+                          <div class = "left"> </div>
+                          <div class = "center">Vertical Swiper</div>
+                          <div class = "right"> </div>
+                       </div>
+                    </div>
+                    -->
+
+                    <div class = "page-content">
+                       <div class = "swiper-container swiper1">
+                          <div class = "swiper-wrapper">
+
+                          </div>
+                          <div class = "swiper-pagination"></div>
+                          <div class="video_comment">
+                            <div class="comments_here">
+                              <p><strong>@ayesha</strong> Haha :D</p>
+                              <p><strong>@zeeshan</strong> Cute yar!</p>
+                              <p><strong>@waqas</strong> Farigh Log</p>
+                              <p><strong>@ali</strong> Love ♥</p>
+                              <p><strong>@cool_murtaza</strong> Duet ??</p>
+                            </div>
+                            <form class="comment_form">
+                              <input placeholder="Write comment.." class="comment_input" type="text" />
+                              <button class="comment_send_btn" type="submit"><i class="fa fa-paper-plane"></i></button>
+                              <button class="love_send_btn" type="button"><i class="fa fa-heart"></i></button>
+
+                            </form>
+                          </div>
+                       </div>
+                    </div>
+
+                 </div>
+              </div>
+           </div>
+        </div>
+
+
+
+  <!--
+
+        <div id="menu-bell" data-menu-height="425" class="menu menu-box-top bg-white">
+        <a href="#" class="bell-item">
+        <img class="preload-image shadow-icon-large" src="images/empty.png" data-src="images/pictures_people/4s.png">
+        <strong>Kolor is Awesome</strong><span class="bg-green2-dark">FRESH</span>
+        <em>
+        You can setup awesome notifications in a menu as well, add useful news and info here.
+        </em>
+        </a>
+        <a href="#" class="bell-item">
+        <img class="preload-image shadow-icon-large" src="images/empty.png" data-src="images/pictures_people/3s.png">
+        <strong>Blazing Fast Loading</strong><span class="bg-red-dark">SYSTEM</span>
+        <em>
+        You can setup awesome notifications in a menu as well, add useful news and info here.
+        </em>
+        </a>
+        <a href="#" class="bell-item">
+        <img class="preload-image shadow-icon-large" src="images/empty.png" data-src="images/pictures_people/1s.png">
+        <strong>Easy to use and Edit</strong><span class="bg-orange-dark">simple</span>
+        <em>
+        You can setup awesome notifications in a menu as well, add useful news and info here.
+        </em>
+        </a>
+        <a href="#" class="bell-item bottom-10">
+        <img class="preload-image shadow-icon-large" src="images/empty.png" data-src="images/pictures_people/2s.png">
+        <strong>Elite Author Quality</strong><span class="bg-blue-dark">quality</span>
+        <em>
+        You can setup awesome notifications in a menu as well, add useful news and info here.
+        </em>
+        </a>
+        <div class="menu-bar"><div></div></div>
+        </div>
+
+        <div class="menu menu-box-full gradient-red-dark shadow-large" id="fullscreen-1">
+        <div class="cover-content-center">
+        <div class="content">
+        <h1 class="center-text bottom-30"><i class="fa fa-exclamation font-30 icon-circle icon-l bg-white color-black shadow-icon-large"></i></h1>
+        <h1 class="color-white uppercase ultrabold center-text bottom-30 font-30">WARNING</h1>
+        <p class="color-white center-text bottom-30 opacity-50 font-14">
+        Nothing to worry about, this is just a dummy. you can click the confirm button to return.
+        </p>
+        <a href="#" class="close-menu button button-round button-white uppercase ultrabold button-center shadow-icon-small">Confirm</a>
+        </div>
+        </div>
+        </div>
+
+
+        <div id="menu-login" data-menu-height="370" class="menu menu-box-modal bg-white shadow-large" style="display: block; height: 370px;">
+        <div class="page-login interactive-login top-25">
+        <h1 class="uppercase ultrabold bottom-0">Login</h1>
+        <p class="smaller-text bottom-30">Hello, stranger! Please enter your credentials below.</p>
+        <div class="page-login-field">
+        <i class="fa fa-user"></i>
+        <input type="text" placeholder="Username">
+        <em>(required)</em>
+        </div>
+        <div class="page-login-field bottom-30">
+        <i class="fa fa-lock"></i>
+        <input type="password" placeholder="Password">
+        <em>(required)</em>
+        </div>
+        <div class="page-login-links bottom-20">
+        <a class="forgot float-right" href="#" data-menu="menu-signup" data-menu-type="menu-box-modal"><i class="fa fa-user float-right"></i>Create Account</a>
+        <a class="create float-left" href="#" data-menu="menu-forgot" data-menu-type="menu-box-modal"><i class="fa fa-eye"></i>Forgot Password</a>
+        <div class="clear"></div>
+        </div>
+        <a href="#" class="close-menu button button-green button-full shadow-icon-large button-round button-sm uppercase bolder">LOGIN</a>
+        </div>
+        </div>
+
+        <div id="menu-profile" data-menu-height="470" class="menu menu-box-modal bg-white shadow-large" style="display: block; height: 470px;">
+        <div class="menu-scroll">
+        <div class="profile-1">
+        <div class="profile-header">
+        <img src="../../products/kolor3/images/pictures/0t.jpg" data-src="../../products/kolor3/images/pictures/0t.jpg" class="responsive-image preload-image">
+        </div>
+        <div class="profile-header-clear-small"></div>
+        <div class="profile-body bottom-30 ">
+        <a href="#" class="profile-button button shadow-icon-large button-s button-round uppercase bolder button-red button-center">Follow</a>
+        <h1 class="profile-heading thin">Karla Black</h1>
+        <h2 class="profile-sub-heading bottom-20 color-highlight">Model for PixaBay</h2>
+        <p class="center-text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis hendrerit dolor eu arcu sollicitudin, quis maximus mi vehicula.
+        </p>
+        <div class="profile-stats">
+        <a href="#"><i class="fab center-text facebook-color fa-facebook"></i>34k</a>
+        <a href="#"><i class="fab center-text twitter-color fa-twitter-square"></i>134k</a>
+        <a href="#"><i class="fab center-text color-orange-dark fa-google-plus-square"></i>138k</a>
+        <div class="clear"></div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <div id="menu-share-list-small" data-menu-height="338" class="menu menu-box-bottom bg-white">
+        <div class="left-25 right-25">
+        <ul class="link-list link-list-small">
+        <li><a href="https://www.facebook.com/sharer/sharer.php?u=file:///home/ghulam/Desktop/Android-Hybrid/liveApp/www/@Live%20App%20Themes/Kolor-theme/products/kolor3/interactive.html" class="shareToFacebook"><i class="fa fa-angle-right"></i><i class="fab fa-facebook font-24 facebook-color"></i><span>Share to Facebook</span></a>
+        </li><li><a href="https://twitter.com/home?status=file:///home/ghulam/Desktop/Android-Hybrid/liveApp/www/@Live%20App%20Themes/Kolor-theme/products/kolor3/interactive.html" class="shareToTwitter"><i class="fa fa-angle-right"></i><i class="fab fa-twitter-square font-24 twitter-color"></i><span>Share to Twitter</span></a>
+        </li><li><a href="https://plus.google.com/share?url=file:///home/ghulam/Desktop/Android-Hybrid/liveApp/www/@Live%20App%20Themes/Kolor-theme/products/kolor3/interactive.html" class="shareToGooglePlus"><i class="fa fa-angle-right"></i><i class="fab fa-google-plus-square font-24 google-color"></i><span>Share to Google Plus</span></a>
+        </li><li><a href="whatsapp://send?text=file:///home/ghulam/Desktop/Android-Hybrid/liveApp/www/@Live%20App%20Themes/Kolor-theme/products/kolor3/interactive.html" class="shareToWhatsApp"><i class="fa fa-angle-right"></i><i class="fab fa-whatsapp-square font-24 whatsapp-color"></i><span>Share via WhatsApp</span></a>
+        </li><li><a href="https://pinterest.com/pin/create/button/?url=file:///home/ghulam/Desktop/Android-Hybrid/liveApp/www/@Live%20App%20Themes/Kolor-theme/products/kolor3/interactive.html" class="shareToPinterest"><i class="fa fa-angle-right"></i><i class="fab fa-pinterest-square font-24 pinterest-color"></i><span>Share via WhatsApp</span></a>
+        </li><li><a href="mailto:?body=file:///home/ghulam/Desktop/Android-Hybrid/liveApp/www/@Live%20App%20Themes/Kolor-theme/products/kolor3/interactive.html" class="shareToMail no-border"><i class="fa fa-angle-right"></i><i class="fa fa-envelope-square font-24 mail-color"></i><span>Share via E-Mail</span></a>
+        </li></ul>
+        </div>
+        </div>
+
+
+        <div id="menu-videos" data-menu-height="350" class="menu menu-box-modal bg-white shadow-large" style="display: block; height: 350px;">
+        <div class="menu-scroll">
+        <iframe class="responsive-image bottom-20" src="https://www.youtube.com/embed/7e90gBu4pas" frameborder="0" allowfullscreen=""></iframe>
+        <h4 class="center-text uppercase ultrabold bottom-0">YouTube Videos</h4>
+        <p class="boxed-text-large bottom-30">
+        Embed videos from your favorite platform with great ease. Just copy and paste the embed link.
+        </p>
+        <a href="#" class="close-menu button button-round button-green button-center-large button-sm uppercase ultrabold shadow-icon-large">Embed Videos - Awesome</a>
+        </div>
+        </div>
+
+        -->
+      </div>
+
+
+      <div class="bottom_nav">
+        <div class="bottom_nav_volume"></div>
+        <div class="btn_noti nav-3">
+          <!-- <img src="img/noti.png" alt="" /> -->
+          <i class="fa fa-bell"></i>
+        </div>
+        <div class="btn_plus nav-3 nav-3-active"> <!-- data-menu="fullscreen-1" data-menu-type="menu-box-full" -->
+          <!-- <img src="img/plus.png" alt="" /> -->
+          <i class="fa fa-plus"></i>
+        </div>
+        <div class="nav-3 btn_profile">
+          <!-- <img src="img/profile.png" alt="" /> -->
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+
+      <div class="live_app_page page_profile">
+
+        <div class="profile_ui">
+          <div class="profile_img">
+            <img class="profile_image" src="images/pictures_people/1s.png" />
+            <h1 class="profile_name">@abbass<h1>
+          </div>
+
+          <div class="profile_popularity">
+              <div class="profile_count"><span class="count">88</span><span class="title">Posts</span></div>
+              <div class="profile_count"><span class="count">25</span><span class="title">Followers</span></div>
+              <div class="profile_count"><span class="count">82</span><span class="title">Following</span></div>
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="tiles_ui">
+          <div class="double">
+            <div class="double_left">
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/0t.jpg" />
+              </div>
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/1t.jpg" />
+              </div>
+            </div>
+            <div class="double_right">
+              <div class="tiles">
+                <video loop autoplay muted poster="img/loader.gif" class="new_video">
+                 <source  src="videos/program.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="single">
+            <div class="tiles tiles_border_right">
+              <img src="images/pictures/2t.jpg" />
+            </div>
+            <div class="tiles tiles_border_right">
+              <img src="images/pictures/3t.jpg" />
+            </div>
+            <div class="tiles">
+              <img src="images/pictures/4t.jpg" />
+            </div>
+          </div>
+
+          <div class="single">
+            <div class="tiles tiles_border_right">
+              <img src="images/pictures/5t.jpg" />
+            </div>
+            <div class="tiles tiles_border_right">
+              <img src="images/pictures/6t.jpg" />
+            </div>
+            <div class="tiles">
+              <img src="images/pictures/7s.jpg" />
+            </div>
+          </div>
+
+          <div class="double">
+            <div class="double_right">
+              <div class="tiles">
+                <video loop autoplay muted poster="img/loader.gif">
+                 <source src="videos/2.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <div class="double_left">
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/8s.jpg" />
+              </div>
+              <div class="tiles">
+                <img src="images/pictures/9l.jpg" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="live_app_page page_noti">
+        <div class="noti_ui">
+          <div class="no_noti">
+            <i class="fa fa-bell"></i>
+            <span>Nothing new for you</span>
+          </div>
+        </div>
+      </div>
+      <div class="live_app_page page_plus">
+
+        <div class="progress_bar">
+        </div>
+
+        <canvas id="canvas"></canvas>
+        <video id="duet_video" poster="img/loader.gif">
+         <source src="" type="video/mp4">
+        </video>
+
+
+        <div class="camera_opt_top">
+          <!--
+            <img class="close_preview" src="img/camera_opt/close.png" />
+          -->
+          <p class="add_opts">
+            <span class="add_sound"><img src="img/camera_opt/music.png" /> <span>+Sound</span></span>
+            <span class="add_video"><img src="img/camera_opt/video.png" /> <span>+Video</span></span>
+          </p>
+        </div>
+
+        <div class="camera_opt_right">
+          <div class="demo_loading">
+            <img src="img/camera_opt/flip.png" />
+            <p>Flip</p>
+          </div>
+          <div class="demo_speed">
+            <img src="img/camera_opt/speed-off.png" />
+            <p>Speed <small>1x</small></p>
+          </div>
+          <div class="demo_beauty">
+            <img src="img/camera_opt/beauty-off.png" />
+            <p>Beauty</p>
+          </div>
+          <div class="demo_loading">
+            <img src="img/camera_opt/filter.png" />
+            <p>Filter</p>
+          </div>
+          <div class="demo_timer">
+            <img src="img/camera_opt/timer.png" />
+            <p>Timer <small>9s</small></p>
+          </div>
+          <div class="demo_loading">
+            <img src="img/camera_opt/flash.png" />
+            <p>Flash</p>
+          </div>
+        </div>
+
+        <div class="camera_opt_bottom">
+          <div class="bottom_three show_effect_tab"><img src="img/camera_opt/effects.png" /></div>
+          <div class="bottom_three"><img id="btn_native_camera" class="record_btn_ui btn_native_camera" src="img/camera_opt/record.png" /></div>
+          <div class="bottom_three show_gallery_tab"><img src="img/camera_opt/upload.png" /></div>
+          <input type="file" style="display:none;" class="gallery_attachment" />
+        </div>
+
+
+        <div class="effect_tab">
+          <img src="img/camera_opt/effect_tab_1.png" alt="" />
+        </div>
+
+        <div class="sound_tab">
+          <img src="img/camera_opt/add_sound.png" alt="" />
+        </div>
+
+      </div>
+
+      <div class="live_app_page page_write">
+        <h1 class="page_title">Write New</h1>
+
+        <input placeholder="Title..." class="write_title" />
+        <textarea placeholder="Write text here.." class="write_para"></textarea>
+        <button type="button" class="write_publish"><i class="fa fa-check"></i> Publish</button>
+
+
+      </div>
+
+
+      <div class="live_app_page duet">
+        <h1 class="page_title">Duet</h1>
+        <div class="duet_main">
+          <div class="duet_half">
+            <video loop autoplay muted poster="img/loader.gif">
+             <source src="videos/8.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="duet_half">
+            <video loop autoplay muted poster="img/loader.gif">
+             <source src="videos/8.mp4" type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="live_app_page search">
+        <h1 class="page_title">Near By</h1>
+        <div id="map"></div>
+      </div>
+
+      <div class="live_app_page mugic">
+        <h1 class="page_title">Write New</h1>
+
+        <div class="radio_ui">
+          <div class="first_half">
+            <span class="big">Kuch is tarha ♥</span>
+            <span class="small listeners"></span>
+          </div>
+          <div class="second_half">
+          </div>
+          <div class="third_half">
+            <span class="small">by: Atif Alam</span>
+
+
+            <div class="radio_opt_container">
+              <div class="like"><i class="fa fa-heart"></i><span>12</span></div>
+              <div class=""><i class="fa fa-comment"></i><span>23</span></div>
+              <div class=""><i class="fa fa-share-alt"></i><span>65</span></div>
+            </div>
+
+             <div class="clearfix"></div>
+
+            <div class="radio_opts">
+              <i class="btn_radio_prev fa fa-arrow-left"></i>
+              <i class="btn_radio_toggle fa fa-pause"></i>
+              <i class="btn_radio_next fa fa-arrow-right"></i>
+            </div>
+
+            <audio id="radio" controls loop>
+              <source src="radio/live.m4a" type="audio/ogg">
+              <source src="radio/live.m4a" type="audio/mpeg">
+            </audio>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="live_app_page pictures">
+        <h1 class="page_title">Pictures</h1>
+
+        <div class="tiles_ui">
+
+
+          <div class="custom_pic">
+            <img class="custom_picture_category" src="img/camera_opt/picture.png" />
+          </div>
+
+
+
+      </div>
+
+      <div class="live_app_page page_mic">
+        <h1 class="page_title">Radio Studio</h1>
+
+
+        <div class="no_noti radio_demo">
+          <i class="fa fa fa-spinner fa-spin"></i>
+          <span>Initializing Radio Server..</span>
+        </div>
+
+
+      </div>
+
+
+
+
+      <div class="live_app_page page_programs">
+          <h1 class="page_title">Programs</h1>
+          <div class="tiles_ui">
+            <div class="double">
+              <div class="double_left">
+                <div class="tiles tiles_border_right">
+                  <img src="images/pictures/0t.jpg" />
+                </div>
+                <div class="tiles tiles_border_right">
+                  <img src="images/pictures/1t.jpg" />
+                </div>
+              </div>
+              <div class="double_right">
+                <div class="tiles">
+                  <video loop autoplay muted poster="img/loader.gif">
+                   <source src="videos/vlog1.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+            </div>
+
+            <div class="single">
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/2t.jpg" />
+              </div>
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/3t.jpg" />
+              </div>
+              <div class="tiles">
+                <img src="images/pictures/4t.jpg" />
+              </div>
+            </div>
+
+            <div class="single">
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/5t.jpg" />
+              </div>
+              <div class="tiles tiles_border_right">
+                <img src="images/pictures/6t.jpg" />
+              </div>
+              <div class="tiles">
+                <img src="images/pictures/7s.jpg" />
+              </div>
+            </div>
+
+            <div class="double">
+              <div class="double_right">
+                <div class="tiles">
+                  <video loop autoplay muted poster="img/loader.gif">
+                   <source src="videos/4.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+              <div class="double_left">
+                <div class="tiles tiles_border_right">
+                  <img src="images/pictures/8s.jpg" />
+                </div>
+                <div class="tiles ">
+                  <img src="images/pictures/9l.jpg" />
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="live_app_page page_radio">
+        <h1 class="page_title">Radio</h1>
+        <!--<div class = "swiper-container swiper2">
+           <div class = "swiper-wrapper">
+              <div class = "swiper-slide">
+              1asd
+              </div>
+              <div class = "swiper-slide">
+              2asd
+              </div>
+              <div class = "swiper-slide">
+              3asd
+            </div>-->
+
+             <div class="radio_ui">
+               <div class="first_half">
+                 <span class="big"><span class="live"><i class="fa fa-circle"></i></span> Live Abbass</span>
+                 <span class="small listeners"></span>
+               </div>
+               <div class="second_half">
+               </div>
+               <div class="third_half">
+                 <span class="small">Many listeners asked me to talk about time management. So, today's topic is time management.</span>
+
+
+                 <div class="radio_opt_container">
+                   <div class="like"><i class="fa fa-heart"></i><span>12</span></div>
+                   <div class=""><i class="fa fa-comment"></i><span>23</span></div>
+                   <div class=""><i class="fa fa-share-alt"></i><span>65</span></div>
+                 </div>
+
+                  <div class="clearfix"></div>
+
+                 <div class="radio_opts">
+                   <i class="btn_radio_prev fa fa-arrow-left"></i>
+                   <i class="btn_radio_toggle fa fa-pause"></i>
+                   <i class="btn_radio_next fa fa-arrow-right"></i>
+                 </div>
+
+                 <audio id="radio" controls loop>
+                   <source src="radio/live.m4a" type="audio/ogg">
+                   <source src="radio/live.m4a" type="audio/mpeg">
+                 </audio>
+               </div>
+             </div>
+
+
+            <!--
+           </div>
+           <div class = "radio-pagination"></div>
+         </div>
+          -->
+      </div>
+      <div class="live_app_page page_article"><div class="noti_ui">
+        <h1 class="page_title">Article</h1>
+        <div class="no_noti">
+          <i class="fa fa-newspaper"></i>
+          <span>Nothing new for you</span>
+          </div>
+        </div>
+      </div>
+      <div class="live_app_page page_review">
+        <h1 class="page_title">Review</h1>
+        <div class="no_noti">
+          <i class="fa fa-edit"></i>
+          <span>Nothing new for you</span>
+          </div>
+        </div>
+      </div>
+      <div class="live_app_page page_blogs">
+        <h1 class="page_title">Blogs</h1>
+        <div class="no_noti">
+          <i class="fa fa-road"></i>
+          <span>Nothing new for you</span>
+          </div>
+        </div>
+      </div>
+
+      <script type = "text/javascript" src = "js/framework7.min.js"></script>
+
+      <script type="text/javascript" src="scripts/jquery.js"></script>
+      <script src="scripts/sweetalert.min.js"></script>
+      <!--
+      <script type="text/javascript" src="scripts/plugins.js"></script>
+      <script type="text/javascript" src="scripts/custom.js"></script>
+      -->
+
+      <script type="text/javascript" src="cordova.js"></script>
+      <script type="text/javascript" src="js/custom.js"></script>
+
+
+
+      </script>
+
+   </body>
+
+</html>

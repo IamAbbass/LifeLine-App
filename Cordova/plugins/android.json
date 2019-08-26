@@ -1,0 +1,37 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    },
+    "cordova-plugin-fingerprint-aio": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    },
+    "cordova-plugin-android-volume": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    },
+    "com.virtuoworks.cordova-plugin-canvascamera": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    },
+    "cordova-plugin-media-capture": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    },
+    "nl.madebymark.share": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.zed.liveapp"
+    }
+  }
+}

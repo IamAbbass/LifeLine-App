@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>simple swiper</title>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="wrapper">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+    </div>
+</div>
+<div class="pager">
+    <span id="pageIndex"></span>/<span id="pageCount"></span>
+</div>
+
+<script type="text/javascript">
+
+var winW = window.innerWidth,
+    winH = window.innerHeight,
+    container = document.querySelector('.container'),
+    boxwrap = document.querySelector('.wrapper'),
+    box = document.querySelectorAll('.box');
+
+/* browser */
+var isMobile = /iPad|iPod|iPhone|Android/.test(navigator.userAgent);
+if(!isMobile){
+    container.style.width = '600px';
+}
+
+var boxLength = box.length;
+var xStart,xEnd,yStart,yEnd;
+var currentIndex = 0;
+
+//init page tips
+var pageCount = document.querySelector('#pageCount');
+var pageIndex = document.querySelector('#pageIndex');
+pageCount.innerHTML = boxLength ;
+pageIndex.innerHTML = 1;
+
+for (var i = 0; i < boxLength; i++) {
+    box[i].style.height = winH+'px';
+}
+boxwrap.style.height = winH*boxLength+'px';
+
+container.addEventListener('touchstart', handleTouchEvent, false);
+container.addEventListener('touchend', handleTouchEvent, false);
+container.addEventListener('touchmove', handleTouchEvent, false);
+container.addEventListener('mousedown', handleTouchEvent, false);
+container.addEventListener('mouseup', handleTouchEvent, false);
+
+//swipe event
+function handleTouchEvent(event){
+    switch(event.type){
+        case "touchstart":
+            xStart = event.touches[0].clientX;
+            yStart = event.touches[0].clientY;
+            //console.log(xStart,yStart);
+            break;
+        case "touchend":
+            xEnd = event.changedTouches[0].clientX;
+            yEnd = event.changedTouches[0].clientY;
+            swipehadle(xStart,xEnd,yStart,yEnd);
+            break;
+        case "mousedown":
+            xStart = event.clientX;
+            yStart = event.clientY;
+            //console.log(xStart,yStart);
+            break;
+        case "mouseup":
+            xEnd = event.clientX;
+            yEnd = event.clientY;
+            swipehadle(xStart,xEnd,yStart,yEnd);
+            break;
+        case "touchmove":
+            event.preventDefault();
+            break;
+    }
+}
+
+function swipehadle(xStart,xEnd,yStart,yEnd){
+    var horizontalDistance = xEnd-xStart;
+    var verticalDistance = yEnd-yStart;
+    //console.log(xEnd,yEnd);
+    console.log(currentIndex);
+
+    if(verticalDistance>30){
+        if (currentIndex>0) {
+            currentIndex--;
+        }
+        console.log('下划',currentIndex);
+        pageIndex.innerHTML = currentIndex+1;
+        boxwrap.style.transform = "translateY(-"+currentIndex*winH+"px)";
+    }else if(verticalDistance<-30){
+        if (currentIndex<boxLength-1) {
+            currentIndex++;
+        }
+        console.log('上划',currentIndex);
+        pageIndex.innerHTML = currentIndex+1;
+        boxwrap.style.transform = "translateY(-"+currentIndex*winH+"px)";
+    }
+
+    if(horizontalDistance>30){
+        console.log('右划');
+    }else if(horizontalDistance<-30){
+        console.log('左划');
+    }
+}
+
+</script>
+</body>
+</html>
