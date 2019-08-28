@@ -6,6 +6,8 @@ var myRadioSwiper;
 var play_radio = false;
 var progress_bar = 0;
 var progress_bar_duet = null;
+var default_timer     = 9;
+var babu_rao          = false;
 
 $(document).ready(function(){
 
@@ -32,9 +34,9 @@ $(document).ready(function(){
 
 
 
-  var heart   = [12,34,45,100,123,44,54,105,98,105,98];
-  var comment = [2,5,10,11,53,58,24,32,7,105,98];
-  var share   = [4,6,10,14,5,8,9,10,14,105,98];
+  var heart   = ["12k","34k","45k","100k","123k","44k","54k","105k","98k","105k","98k"];
+  var comment = ["2.6m","5.4m","10m","11m","53m","58m","24m","32m","7.4m","105m","98m"];
+  var share   = ["4.1k","6k","10k","14k","5.2k","8.6k","9.2k","10k","14k","105k","98k"];
 
   var media_time = ["","5 hrs <i class='fa fa-clock'></i>","6 hrs <i class='fa fa-clock'></i>","18 hrs <i class='fa fa-clock'></i>","8 hrs <i class='fa fa-clock'></i>",
   "6 mins <i class='fa fa-clock'></i>","8 mins <i class='fa fa-clock'></i>","18 mins <i class='fa fa-clock'></i>","<span class='live'>Live <i class='fa fa-circle'></i> &bull; <i class='fa fa-eye'></i> 1.6m</span>","<span class='live'>Live <i class='fa fa-circle'></i> &bull; <i class='fa fa-eye'></i> 3.7k</span>","<span class='live'>Live <i class='fa fa-circle'></i> &bull; <i class='fa fa-eye'></i> 10k</span>"];
@@ -43,9 +45,9 @@ $(document).ready(function(){
 
 
   $(videos).each(function(i, value){
-    //if(i <= 5){
+    if(i <= 3){
       $(".swiper-wrapper").append('<div class = "swiper-slide">'+
-        '<video loop class="video_frame" poster="img/loader.gif">'+
+        '<video loop class="video_frame">'+ //poster="img/loader.gif"
          '<source src="videos/'+videos[i]+'" type="video/mp4">'+
         '</video>'+
         '<div class="my_captain">'+
@@ -58,9 +60,15 @@ $(document).ready(function(){
             '<div class="video_opt btn_share"><i class="fa fa-share-alt"></i><span>'+share[i]+'</span></div>'+
             '<div class="video_opt btn_duet"><img src="img/duet.png" /><span></span></div>'+
          '</div>'+
+         '<marquee scrollamount="4" class="song_marquee" attribute_name="">'+
+            '<img src="img/camera_opt/music.png" alt="" /> Micheal Jackson Song'+
+         '</marquee>'+
+         '<div class="marquee-disk">'+
+          '<img src="img/music-disk.png" alt="" />'+
+         '</div>'+
         '</div>'+
       '</div>');
-    //}
+    }
   });
 
   $(document).delegate(".btn_share","click",function(){
@@ -125,11 +133,11 @@ $(document).ready(function(){
   var comment_id = 0;
   $(".love_send_btn").click(function(e){
 
-    var comment = "♥";
+    var comment = "💗";
     if(comment.length > 0){
         comment_id++;
 
-        $(".comments_here").append("<p comment_id='"+comment_id+"'><strong>@abbassified</strong> "+comment+"</p>");
+        $(".comments_here").append("<p comment_id='"+comment_id+"'><strong>@abbassified: </strong>"+comment+"</p>");
         $(".comment_input").val("");
         $(".comments_here").scrollTop($(".comments_here")[0].scrollHeight);
 
@@ -156,10 +164,10 @@ $(document).ready(function(){
   //pre load for better UI UX
   setTimeout(function(){
     $(".video_frame").each(function(index, elem){
-      $(".video_frame")[index].play();
+      //$(".video_frame")[index].play();
       setTimeout(function(){
         if(index != 0){
-          $(".video_frame")[index].pause();
+          //$(".video_frame")[index].pause();
         }
       },100);
     });
@@ -234,7 +242,6 @@ $(document).ready(function(){
 
     }
   }
-
   function show_page(page){
     $(".live_app_page").hide();
       $(".pre-loader").show();
@@ -244,7 +251,6 @@ $(document).ready(function(){
         $(".pre-loader").fadeOut();
       },200);
   }
-
   function navigate(page){
     current_page = page;
     pause_all();
@@ -372,23 +378,26 @@ $(document).ready(function(){
       show_page("mugic");
     }else if(page == "duet"){
       show_page("duet");
+    }else if(page == "video_step_2"){
+      show_page("video_step_2");
     }
+
+
 
 
 
     console.log({current_page});
   }
-
   function pause_all(){
     $(".video_frame").each(function(index, elem){
-      $(".video_frame")[index].pause();
+      if($(".video_frame")[index].paused == false){
+        $(".video_frame")[index].pause();
+        $(".video_frame").css("opacity",0);
+      }
     });
     //pause_effect();
   }
-
   var paused_video = null;
-
-
 
   function play_effect(){
     $("#control_icons").show();
@@ -400,15 +409,13 @@ $(document).ready(function(){
       $("#control_icons").hide();
     },500);
   }
-
   function pause_effect(){
     $("#control_icons").show();
     $("#control_icons").children("img").css("width","96px");
     $("#control_icons").children("img").css("opacity","0");
     $("#control_icons").children("img").attr("src","img/pause.png");
-    $("#control_icons").children("img").animate({width: "70px", opacity: 0.75},250);
+    $("#control_icons").children("img").animate({width: "70px", opacity: 0.9},250);
   }
-
   var toggle_like = true; //global
   function like_effect(toggle_like){
 
@@ -432,13 +439,12 @@ $(document).ready(function(){
 
     return toggle_like;
   }
-
   var myApp = new Framework7();
 
   function restart_swiper(direction){
     mySwiper = myApp.swiper('.swiper1', {
-       paginationClickable: true,
-       pagination:'.swiper-pagination',
+       //paginationClickable: true,
+       //pagination:'.swiper-pagination',
        //effect: 'cube', //flip
        //mousewheel: true,
        /*grabCursor: true,
@@ -455,9 +461,12 @@ $(document).ready(function(){
           pause_all();
        },onSlideChangeEnd: function (swiper) {
           console.log("Playing: "+swiper.activeIndex);
-          $(".video_frame")[swiper.activeIndex].play();
           $("#control_icons").hide();
           menu_show = true;
+          $(".video_frame").animate({opacity:1},250);
+          setTimeout(function(){
+            $(".video_frame")[swiper.activeIndex].play();
+          },250);
        }
     });
   }
@@ -589,21 +598,26 @@ $(document).ready(function(){
 
   $(".set_category").click(function(){
     var this_ = $(this);
+    pause_all();
 
-    //$(".pre-loader").fadeIn(function(){
-      //setTimeout(function(){
+    $(".bottom_nav").animate({bottom: "-60px"},250);
+
+    $(".pre-loader").fadeIn(function(){
+      setTimeout(function(){
         $(".category").removeClass("category_active");
         $(this_).addClass("category_active");
 
-
-        //$(".pre-loader").slideDown();
-        pause_all();
         var count = $(".swiper-slide").length-1;
         var random_i = Math.floor((Math.random() * count) + 1);
         mySwiper.slideTo(random_i, 0, false);
         $(".video_frame")[random_i].play();
-        //$(".pre-loader").slideUp();
+        $("#control_icons").hide();
 
+        $(".bottom_nav").animate({bottom: "0"},500);
+
+        $(".pre-loader").fadeOut();
+
+        /*
         swal({ //yahan
           //title: $(".category_active").children("span").text(),
           text: "Getting the '"+$(".category_active").children("span").text()+"' category..",
@@ -611,6 +625,8 @@ $(document).ready(function(){
           button:false,
           timer:750,
         });
+        */
+
         /*
         $(".category_active").children("span").slideDown();
         setTimeout(function(){
@@ -618,8 +634,8 @@ $(document).ready(function(){
         },1500);
         */
 
-      //},200);
-    //});
+      },200);
+    });
   });
 
   $(".menu_item").click(function(){
@@ -743,11 +759,11 @@ $(document).ready(function(){
 
 
     if(toggle_like == true){
-      var likes = +$(this).children("span").text();
-      $(this).children("span").text(likes+1);
+      //var likes = +$(this).children("span").text();
+      //$(this).children("span").text(likes+1);
     }else{
-      var likes = +$(this).children("span").text();
-      $(this).children("span").text(likes-1);
+      //var likes = +$(this).children("span").text();
+      //$(this).children("span").text(likes-1);
     }
 
     toggle_like = like_effect(toggle_like);
@@ -807,6 +823,17 @@ $(".effect_tab img").click(function(){
 
 $("#canvas").click(function(){
   $(".effect_tab").fadeOut();
+  $(".settings_box").fadeOut();
+});
+$(".filter_opt").click(function(){
+  $(".filter_opt").removeClass("filter_opt_selected");
+  $(this).addClass("filter_opt_selected");
+});
+
+
+$(".timer_input").on("input",function(){
+  default_timer = +$(this).val();
+  $(".default_timer").text(default_timer+" secs");
 });
 
 $(".show_gallery_tab").click(function(){
@@ -825,9 +852,32 @@ $(".gallery_attachment").change(function(){
 
 $(".add_sound, .add_video").click(function(){
   $(".sound_tab").slideDown();
+  $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
 });
+
+$(document).delegate(".marquee-disk, marquee","click",function(){
+  //$(".btn_plus").click();
+  $(".sound_tab").slideDown();
+  $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
+});
+
+var sound_tab_clicks = 0;
 $(".sound_tab").click(function(){
-  $(".sound_tab").slideUp();
+  if(sound_tab_clicks == 0){
+    $(".sound_tab img").attr("src","img/camera_opt/add_sound_2.png");
+    sound_tab_clicks++;
+    $('.sound_player')[0].load();
+    $('.sound_player')[0].play();
+  }else{
+    sound_tab_clicks = 0;
+    $(".sound_tab").slideUp();
+    $('.sound_player')[0].pause();
+    $('.sound_player')[0].load();
+
+    babu_rao = true;
+    //babu rao
+    default_timer = 6.5;
+  }
 });
 
 $(".demo_loading").click(function(){
@@ -866,49 +916,84 @@ $(".demo_beauty").click(function(){
 
 
 
-var demo_speed = 1;
+//var demo_speed = 0;
 $(".demo_speed").click(function(){
-  if(demo_speed < 2){
-    demo_speed += 0.5;
-  }else{
-    demo_speed = 1;
-  }
+  $(".settings_box").hide();
 
-  if(demo_speed <= 1){
-    $(this).children("img").attr("src","img/camera_opt/speed-off.png");
-  }else{
-    $(this).children("img").attr("src","img/camera_opt/speed.png");
-  }
-  $(this).children("p").children("small").html(demo_speed+"x");
+  //if($(".camera_speed").is(":visible")){
+    //$(".camera_speed").fadeOut();
+  //}else{
+    $(".camera_speed").fadeIn();
+  //}
+
+});
+$(".demo_filter").click(function(){
+  $(".settings_box").hide();
+  $(".filter_box").fadeIn();
 });
 
-var demo_timer = 3;
+
+
+
+$(".speed_opt").click(function(){
+  $(".speed_opt").removeClass("speed_opt_seleted");
+  $(this).addClass("speed_opt_seleted");
+});
+
+//var demo_timer = 3;
 $(".demo_timer").click(function(){
-  if(demo_timer < 12){
+  $(".settings_box").hide();
+  $(".timer_box").fadeIn();
+
+  $(".default_timer").text(default_timer+" secs");
+
+  /*if(demo_timer < 12){
     demo_timer += 3;
   }else{
     demo_timer = 3;
   }
   $(this).children("p").children("small").html(demo_timer+"x");
+  */
+});
+
+$(".demo_volume").click(function(){
+  $(".settings_box").hide();
+  $(".volume_box").fadeIn();
+});
+
+$(".demo_Aa").click(function(){
+  $(".settings_box").hide();
+  $(".Aa_box").fadeIn();
 });
 
 
 
 
 
+
+var make_opacity = ".camera_opt_top, .camera_opt_right, .show_effect_tab, .show_gallery_tab";
+
 var btn_native_camera   = document.getElementById("btn_native_camera");
 btn_native_camera.addEventListener('touchstart', function(){
-  $("#duet_video")[0].play();
+  $(".settings_box").fadeOut();
 
+  $(make_opacity).animate({
+    opacity:0.05
+  },500);
+
+  if(babu_rao == true){
+    $('.sound_player')[0].play();
+  }
+
+  $("#duet_video")[0].play();
   //$("#canvas").css("height",$("#duet_video").height()+"px");
   //console.log($("#duet_video").height());
   progress_bar_allow = true;
-
   progress_bar_duet = setInterval(function(){
       console.log("true");
-      progress_bar+=0.5;
-      if(progress_bar >= 100){
 
+      progress_bar+=0.1;
+      if(progress_bar >= default_timer){
         swal({
           //title: "Top result:",
           text: "Please wait..",
@@ -916,6 +1001,12 @@ btn_native_camera.addEventListener('touchstart', function(){
           button:false,
           timer:2000,
         }).then((value) => {
+          progress_bar = 0;
+
+          $(make_opacity).animate({
+            opacity:1
+          },500);
+
           clearInterval(progress_bar_duet);
           swal({
             title: "Publish Video ?",
@@ -923,25 +1014,41 @@ btn_native_camera.addEventListener('touchstart', function(){
             icon: "info",
             buttons: true,
             dangerMode: false,
-            buttons: ["No!", "Yess!"],
+
+            buttons: ["Reshoot", "Next"],
           }).then((value) => {
             swal.close();
             if(value != null){
-              swal({
-                title: "Video Publish",
-                text: " ",
-                icon: "success",
-                buttons: false,
-              });
+              //navigate("video_step_2");
+              var page = "video_step_2";
+              $(".live_app_page").hide();
+              $(".pre-loader").show();
+              setTimeout(function(){
+                $(".pre-loader").hide();
+                $("."+page).show();
+                $(".pre-loader").fadeOut();
+              },200);
             }else{}
           });
         });
       }
-      $(".progress_bar").width(progress_bar+"%");
-  },25);
+
+      var percentage = (progress_bar*100)/default_timer;
+      $(".progress_bar").width(percentage+"%");
+  },100);
   $("#btn_native_camera").addClass("fa-spin");
 },false);
 btn_native_camera.addEventListener('touchend', function(){
+
+  $(make_opacity).animate({
+    opacity:1
+  },500);
+
+  if(babu_rao == true){
+    $('.sound_player')[0].pause();
+  }
+
+
   $("#duet_video")[0].pause();
   clearInterval(progress_bar_duet);
   $("#btn_native_camera").removeClass("fa-spin");
@@ -984,7 +1091,7 @@ $(".btn_native_camera").click(function(){
       */
 
       //navigate("home");
-    },1000);
+    },3000);
 
     /*var params = new Object();
     params.profile_id  = global_id;

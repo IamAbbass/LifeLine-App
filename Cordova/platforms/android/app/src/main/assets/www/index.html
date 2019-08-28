@@ -30,24 +30,7 @@
       </div>
 
       <div class="my_menu">
-        <div class="menu_expand">
-           <!--<img src="img/menu-expand.png" alt="" />-->
-           <i class="fa fa-ellipsis-h"></i>
-        </div>
-
         <div class="menu_list">
-           <!--<div class="menu_item menu_item_active"><img src="img/home.png" alt="" /></div>
-           <div class="menu_item"><img src="img/update.png" alt="" /></div>
-           <div class="menu_item"><img src="img/programs.png" alt="" /></div>
-           <div class="menu_item"><img src="img/short-flims.png" alt="" /></div>
-           <div class="menu_item"><img src="img/documentry.png" alt="" /></div>
-           <div class="menu_item"><img src="img/vlog.png" alt="" /></div>
-           <div class="menu_item"><img src="img/memes.png" alt="" /></div>
-           <div class="menu_item"><img src="img/cartoons.png" alt="" /></div>
-           <div class="menu_item"><img src="img/radio.png" alt="" /></div>
-           <div class="menu_item"><img src="img/blog.png" alt="" /></div>
-           <div class="menu_item"><img src="img/article.png" alt="" /></div>
-           <div class="menu_item"><img src="img/review.png" alt="" /></div>-->
            <div class="menu_item nav_home menu_item_active"><i class="fa fa-home"></i><span>Home</span></div>
            <div class="menu_item nav_updates"><i class="fa fa-bolt"></i><span>Updates</span></div>
            <div class="menu_item nav_programs"><i class="fa fa-clock"></i><span>Programs</span></div>
@@ -81,12 +64,14 @@
           </p>
         </div>
 
+        <!--
         <div class="video_category">
           <p class="video_category_text">
             <span class="category btn_volume"><i class="fa fa-bell-slash"></i> <span></span></span>
             <span class="category btn_replay"><i class="fa fa-history"></i> <span></span></span>
           </p>
         </div>
+        -->
 
         <div class = "views">
            <div class = "view view-main">
@@ -111,11 +96,7 @@
                           <div class = "swiper-pagination"></div>
                           <div class="video_comment">
                             <div class="comments_here">
-                              <p><strong>@ayesha</strong> Haha :D</p>
-                              <p><strong>@zeeshan</strong> Cute yar!</p>
-                              <p><strong>@waqas</strong> Farigh Log</p>
-                              <p><strong>@ali</strong> Love ♥</p>
-                              <p><strong>@cool_murtaza</strong> Duet ??</p>
+                              
                             </div>
                             <form class="comment_form">
                               <input placeholder="Write comment.." class="comment_input" type="text" />
@@ -261,18 +242,23 @@
 
       <div class="bottom_nav">
         <div class="bottom_nav_volume"></div>
+
+        <div class="menu_expand nav-3">
+           <i class="fa fa-ellipsis-h"></i>
+        </div>
         <div class="btn_noti nav-3">
-          <!-- <img src="img/noti.png" alt="" /> -->
           <i class="fa fa-bell"></i>
         </div>
-        <div class="btn_plus nav-3 nav-3-active"> <!-- data-menu="fullscreen-1" data-menu-type="menu-box-full" -->
-          <!-- <img src="img/plus.png" alt="" /> -->
+        <div class="btn_plus nav-3 nav-3-active">
           <i class="fa fa-plus"></i>
         </div>
+        <div class="nav-3 btn_replay">
+          <i class="fa fa-history"></i>
+        </div>
         <div class="nav-3 btn_profile">
-          <!-- <img src="img/profile.png" alt="" /> -->
           <i class="fa fa-user"></i>
         </div>
+
       </div>
 
       <div class="live_app_page page_profile">
@@ -390,24 +376,85 @@
           </div>
           <div class="demo_speed">
             <img src="img/camera_opt/speed-off.png" />
-            <p>Speed <small>1x</small></p>
+            <p>Speed</p>
           </div>
           <div class="demo_beauty">
             <img src="img/camera_opt/beauty-off.png" />
             <p>Beauty</p>
           </div>
-          <div class="demo_loading">
+          <div class="demo_filter">
             <img src="img/camera_opt/filter.png" />
             <p>Filter</p>
           </div>
           <div class="demo_timer">
             <img src="img/camera_opt/timer.png" />
-            <p>Timer <small>9s</small></p>
+            <p>Timer</p>
           </div>
           <div class="demo_loading">
             <img src="img/camera_opt/flash.png" />
             <p>Flash</p>
           </div>
+          <div class="demo_volume">
+            <img src="img/camera_opt/music.png" />
+            <p>Volume</p>
+          </div>
+
+          <div class="demo_Aa">
+            <img src="img/camera_opt/music.png" />
+            <p>Aa</p>
+          </div>
+        </div>
+
+        <div class="camera_settings">
+          <div class="settings_box camera_speed">
+            <div class="speed_opt">0.3x</div>
+            <div class="speed_opt">0.5x</div>
+            <div class="speed_opt speed_opt_seleted">1x</div>
+            <div class="speed_opt">2x</div>
+            <div class="speed_opt">3x</div>
+          </div>
+          <div class="settings_box filter_box">
+            <div style="background: #4285f4;" class="filter_opt"></div>
+            <div style="background: #ea4335;" class="filter_opt"></div>
+            <div style="background: #fbbc05;" class="filter_opt"></div>
+            <div style="background: #34a853;" class="filter_opt"></div>
+            <div style="background: #d19a58;" class="filter_opt"></div>
+          </div>
+
+          <div class="settings_box timer_box">
+            <p class="timer_output default_timer"></p>
+            <input type="range" class="timer_opt timer_input" min="6" value="9" max="60" />
+          </div>
+
+          <div class="settings_box volume_box">
+            <p class="timer_output">Original Sound:</p>
+            <input type="range" class="timer_opt" min="0" value="50" max="100" />
+
+            <p class="timer_output">Music Sound:</p>
+            <input type="range" class="timer_opt" min="0" value="50" max="100" />
+          </div>
+
+          <div class="settings_box Aa_box">
+
+            <input type="text" class="Aa" />
+
+            <div style="background: #4285f4;" class="filter_opt"></div>
+            <div style="background: #ea4335;" class="filter_opt"></div>
+            <div style="background: #fbbc05;" class="filter_opt"></div>
+            <div style="background: #34a853;" class="filter_opt"></div>
+            <div style="background: #d19a58;" class="filter_opt"></div>
+
+            <br />
+
+            <div style="background: #4285f4;" class="filter_opt"></div>
+            <div style="background: #ea4335;" class="filter_opt"></div>
+            <div style="background: #fbbc05;" class="filter_opt"></div>
+            <div style="background: #34a853;" class="filter_opt"></div>
+            <div style="background: #d19a58;" class="filter_opt"></div>
+
+          </div>
+
+
         </div>
 
         <div class="camera_opt_bottom">
@@ -424,6 +471,10 @@
 
         <div class="sound_tab">
           <img src="img/camera_opt/add_sound.png" alt="" />
+          <audio class="sound_player" controls>
+          <source src="audio/audio.ogg" type="audio/ogg">
+          <source src="audio/audio.mp3" type="audio/mpeg">
+        </audio>
         </div>
 
       </div>
@@ -655,6 +706,7 @@
           </div>
         </div>
       </div>
+
       <div class="live_app_page page_review">
         <h1 class="page_title">Review</h1>
         <div class="no_noti">
@@ -670,6 +722,26 @@
           <span>Nothing new for you</span>
           </div>
         </div>
+      </div>
+
+      <div class="live_app_page video_step_2">
+        <h1 class="page_title">Publish Video</h1>
+
+        <input placeholder="Title..." class="write_title" />
+        <textarea placeholder="Write text here.." class="write_para"></textarea>
+
+        #hashtag
+        @tagfriend
+        1. Who can view this video (public, friends, private)
+        2. comments off
+        3. duet / react
+        4. save to album
+
+
+        <button type="button" class="write_publish"><i class="fa fa-check"></i> Post</button>
+
+
+
       </div>
 
       <script type = "text/javascript" src = "js/framework7.min.js"></script>

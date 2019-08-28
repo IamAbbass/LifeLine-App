@@ -1,19 +1,29 @@
+@font-face {
+  font-family: Montserrat;
+  src: url("../fonts/Montserrat-Light.ttf");
+}
+
 * {
   box-sizing: border-box;
 }
 p{
   line-height:1 !important;
 }
+body, h1, h2, h3, h4, h5, h6, p, span, strong, input{
+  font-family: Montserrat;
+}
 body {
   margin: 0;
-  font-family: Arial;
-  font-size: 17px;
+  font-family: Montserrat;
+  font-size: 16px;
+  background: #000 !important;
 }
 .bottom_nav_volume{
   height: 1px;
   width: 0;
   background: #fff;
   box-shadow: 0 0 10px #fff;
+  display: none;
 }
 .video_frame {
   position: absolute;
@@ -71,8 +81,8 @@ body {
 
 .comments_here p{
   margin: 0 0 10px 0;
-  font-size: 20px;
-  font-family: cursive;
+  font-size: 16px;
+  font-family: Montserrat;
   color:#fff;
 }
 .comments_here{
@@ -88,7 +98,7 @@ body {
   font-size: 22px;
   color: #fff;
   float: left;
-  font-family: cursive;
+  font-family: Montserrat;
 }
 .comment_send_btn, .love_send_btn{
   float: right;
@@ -127,6 +137,9 @@ body {
 .navbar-fixed .page-content, .navbar-through .page-content{
   padding :0 !important;
 }
+.page-content{
+  background: #000;
+}
 .page_home_videos{
 
   display: block;
@@ -139,12 +152,12 @@ body {
 
 
 #control_icons{
-    position: fixed;
-    top: 40%;
-    left: 0%;
-    z-index: 9999;
-    width: 100%;
-    display:none;
+  position: fixed;
+  top: 40%;
+  left: 30%;
+  z-index: 9999;
+  width: 40%;
+  display: none;
 }
 #control_icons img{
     display: block;
@@ -156,17 +169,21 @@ body {
   bottom: -50px;
   left: 0;
   width: 100%;
-  height: 48px;
+  height: 50px;
   z-index: 9999;
   background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.4));
 }
-
+.btn_plus{
+  box-shadow: 0 0 5px #fff;
+  border-radius: 44px;
+  background: rgb(255,255,255,0.1);
+}
 
 
 .bottom_nav .nav-3{
   float: left;
-  width: 33.33%;
-  height:48px;
+  width: 20%;
+  min-height:40px;
 }
 
 .bottom_nav .nav-3-active{
@@ -196,11 +213,13 @@ body {
 .add_opts{
     margin: 0 auto;
     display: block;
-    width: 45%;
+    width: 160px;
 }
 .add_sound{
     color: #fff;
     float: left;
+    border-right: 1px solid #fff;
+    padding-right: 10px;
 }
 .add_video{
     color: #fff;
@@ -309,7 +328,7 @@ body {
     height: 100%;
 }
 .page_title{
-    font-family: 'Gugi', cursive;
+    font-family: 'Gugi', Montserrat;
     position: absolute;
     top: 10px;
     left: 50px;
@@ -319,22 +338,51 @@ body {
     font-size: 20px;
     text-align: left;
 }
-
+.song_marquee{
+  color: #fff;
+}
+.song_marquee img{
+  width: 18px;
+    position: relative;
+    top: 3px;
+}
+.marquee-disk{
+  position: absolute;
+    right: 0;
+    top: 70px;
+    width: 35px;
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+.marquee-disk img{
+  width: 100%;
+      display: block;
+      margin: 0 auto;
+      animation: rotation 4s infinite linear;
+}
 .my_captain{
     position: fixed;
-    bottom: 36px;
+    bottom: 40px;
     left: 0;
     width: 100%;
-    height: 118px;
+    height: 110px;
     z-index: 30;
-    padding: 0 24px;
+    padding: 0 18px;
     text-shadow: 0 0 2px #333;
+    overflow: hidden;
 }
 .my_captain .name, .my_captain .tag, .my_captain .desc{
   color: #fff;
   margin: 0;
   text-shadow: 0 0 2px #333;
   margin-bottom: 5px;
+
 }
 .my_captain .name{
   font-size:18px;
@@ -345,25 +393,36 @@ body {
 }
 .my_captain .desc{
   font-size:13px;
+  opacity: 0.9;
 
 }
-.video_opt_container{
-
+.video_opt_container {
+    position: fixed;
+    right: 0;
+    width: 40px;
+    top: 35%;
 }
 .video_opt_container span{
-  font-size: 13px;
+  font-size: 16px;
   position: relative;
   top: -3px;
-  left: 3px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.swiper-slide{
+  background: #000;
 }
 .heart-fill{
   color:#FF6347 !important;
 }
 .video_opt{
   float: left;
-  margin-right: 15px;
-  color: #fff;
-  font-size: 19px;
+    margin-right: 10px;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    width: 34px;
 }
 .video_opt img{
   width: 100%;
@@ -436,7 +495,8 @@ body {
     top: -5px;
     display:inline;
 }
-.live_app_page{
+.live_app_page {
+    background: linear-gradient(#2193b0,#6dd5ed);
 }
 
 .page_programs, .page_radio, .page_article, .page_review, .page_blogs, .page_profile, .page_write, .page_mic{
@@ -451,7 +511,8 @@ body {
   display:none;
 }
 .font-8{
-  font-size:22px;
+  font-size: 18px;
+  opacity: 0.5;
 }
 
 .my_menu{
@@ -461,7 +522,7 @@ body {
   z-index: 10000;
 }
 .menu_expand{
-  padding: 0 8px;
+  /*padding: 0 8px;
   width: 38px;
   text-align: center;
   color: #fff;
@@ -470,9 +531,10 @@ body {
   left: 5px;
   text-shadow: 0 0 2px #333;
   top: -40px;
+  */
 }
 .menu_expand img{
-  width:100%;
+  /*width:100%;*/
 }
 .clearfix{
   clear: both !important;
@@ -481,11 +543,11 @@ body {
   display:none;
   position: relative;
   width: 100%;
-  background: linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,1));
-  height: -webkit-fill-available;
+  background: 100%;
   padding:75px 0;
   top: -36px;
   z-index: 10000;
+  background: rgb(0,0,0,0.5);
 }
 .menu_item{
   width: 33.33%;
@@ -593,7 +655,7 @@ body {
 }
 
 .write_title, .write_para{
-    font-family: 'Gugi', cursive;
+    font-family: 'Gugi', Montserrat;
     background: transparent;
     color: #fff;
     border: navajowhite;
@@ -681,7 +743,7 @@ body {
   display: block;
   padding: 60px 0 0;
   font-size: 36px;
-  font-family: 'Gugi', cursive;
+  font-family: 'Gugi', Montserrat;
 }
 .first_half span.small{
   color: #fff;
@@ -694,7 +756,7 @@ body {
   color: #fff;
   width: 100%;
   display: block;
-  font-family: 'Gugi', cursive;
+  font-family: 'Gugi', Montserrat;
 }
 .radio_opt_container{
   display: block;
@@ -761,7 +823,7 @@ body {
   width: 35%;
 }
 .profile_name{
-  font-family: 'Gugi', cursive;
+  font-family: 'Gugi', Montserrat;
 color: #fff;
 text-align: center;
 margin: 0;
@@ -789,7 +851,7 @@ font-size: 18px;
     font-size: 16px;
     width: 100%;
     display: block;
-    font-family: 'Gugi', cursive;
+    font-family: 'Gugi', Montserrat;
 }
 .profile_count .title{
   width: 100%;
@@ -828,8 +890,8 @@ font-size: 18px;
   color: #fff;
   text-align: center;
   width: 100%;
-  padding: 12px;
-  font-size: 24px;
+  padding: 14px;
+  font-size: 18px;
 }
 #map {
   position: fixed !important;
@@ -840,12 +902,7 @@ font-size: 18px;
 }
 
 .btn_duet{
-  float: right !important;
-  margin: 0 !important;
-  border-radius: 10px;
-  border: 1px solid #fff;
-  position: relative;
-  top: -10px;
+  /*float: right !important;*/
 }
 
 .sound_tab{
@@ -873,4 +930,105 @@ font-size: 18px;
   width: 100%;
 height: 100%;
 
+}
+.camera_settings{
+  position: fixed;
+  bottom: 105px;
+  left: 10%;
+  width: 80%;
+  text-align: center;
+}
+.camera_speed, .filter_box, .timer_box, .volume_box, .Aa_box{
+  display: none;
+}
+.sound_player{
+  display:none;
+}
+.speed_opt{
+  display: block;
+      background: rgb(0,0,0,0.1);
+      width: 20%;
+      float: left;
+      padding: 10px;
+      color: #fff;
+}
+.speed_opt_seleted{
+  background: #333 !important;
+}
+.filter_opt{
+  width: 25px;
+  height: 25px;
+  float: left;
+  border: 2px solid #fff;
+  margin-right: 10px;
+  border-radius: 100%;
+  box-shadow: 0 0 5px #fff;
+}
+.filter_opt_selected{
+    border: 2px solid #000;
+}
+
+.timer_opt[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: #fff;
+  height: 8px;
+  border-radius: 10px;
+}
+
+.timer_opt[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+.timer_opt[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+.timer_opt[type=range]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.timer_opt[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+
+/* All the same stuff for Firefox */
+.timer_opt[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+.timer_opt[type=range]::-ms-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.timer_output{
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
 }
