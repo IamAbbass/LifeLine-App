@@ -281,6 +281,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "navigator.splashscreen"
       ]
+    },
+    {
+      "id": "cordova-plugin-camera-preview.CameraPreview",
+      "file": "plugins/cordova-plugin-camera-preview/www/CameraPreview.js",
+      "pluginId": "cordova-plugin-camera-preview",
+      "clobbers": [
+        "CameraPreview"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -291,6 +299,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-media-capture": "3.0.2",
     "nl.madebymark.share": "0.1.1",
-    "cordova-plugin-splashscreen": "5.0.2"
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-camera-preview": "0.11.0"
   };
 });

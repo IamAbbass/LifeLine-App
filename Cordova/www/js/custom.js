@@ -45,7 +45,7 @@ $(document).ready(function(){
 
 
   $(videos).each(function(i, value){
-    if(i <= 3){
+    //if(i <= 3){
       $(".swiper-wrapper").append('<div class = "swiper-slide">'+
         '<video loop class="video_frame">'+ //poster="img/loader.gif"
          '<source src="videos/'+videos[i]+'" type="video/mp4">'+
@@ -68,7 +68,7 @@ $(document).ready(function(){
          '</div>'+
         '</div>'+
       '</div>');
-    }
+    //}
   });
 
   $(document).delegate(".btn_share","click",function(){
@@ -91,8 +91,19 @@ $(document).ready(function(){
     navigate("plus");
     try{
       var options = {
-          cameraFacing: 'front',
-          fps: 10,
+        width: $(window).width(),
+        height: $(window).height(),
+        canvas: {
+          width: $(window).width(),
+          height: $(window).height()
+        },
+        capture: {
+          width: $(window).width(),
+          height: $(window).height()
+        },
+        cameraFacing: 'front',
+          fps: 30,
+          quality: 1,
       };
       window.plugin.CanvasCamera.start(options);
     }catch(e){}
@@ -1135,6 +1146,37 @@ $(".btn_native_camera").click(function(){
   }, options);
   */
 
+});
+
+var font_weight = "normal";
+$(".font-weight").click(function(){
+  if(font_weight == "normal"){
+    font_weight = "highlight";
+  }else if(font_weight == "highlight"){
+    font_weight = "lowlight";
+  }else if(font_weight == "lowlight"){
+    font_weight = "normal";
+  }
+
+  $(".font-weight")
+  .removeClass("normal")
+  .removeClass("highlight")
+  .removeClass("lowlight")
+  .addClass(font_weight);
+});
+
+var text_align = "left";
+$(".text-align").click(function(){
+  if(text_align == "left"){
+    text_align = "right";
+  }else if(text_align == "right"){
+    text_align = "center";
+  }else if(text_align == "center"){
+    text_align = "left";
+  }
+
+  var src = "img/align-"+text_align+".png";
+  $(".text-align").css("background-image",'url("'+src+'")');
 });
 
 

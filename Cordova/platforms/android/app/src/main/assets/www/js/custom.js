@@ -91,8 +91,19 @@ $(document).ready(function(){
     navigate("plus");
     try{
       var options = {
-          cameraFacing: 'front',
-          fps: 10,
+        width: $(window).width(),
+        height: $(window).height(),
+        canvas: {
+          width: $(window).width(),
+          height: $(window).height()
+        },
+        capture: {
+          width: $(window).width(),
+          height: $(window).height()
+        },
+        cameraFacing: 'front',
+          fps: 30,
+          quality: 1,
       };
       window.plugin.CanvasCamera.start(options);
     }catch(e){}
@@ -392,6 +403,7 @@ $(document).ready(function(){
     $(".video_frame").each(function(index, elem){
       if($(".video_frame")[index].paused == false){
         $(".video_frame")[index].pause();
+        $(".video_frame").css("opacity",0);
       }
     });
     //pause_effect();
@@ -462,6 +474,7 @@ $(document).ready(function(){
           console.log("Playing: "+swiper.activeIndex);
           $("#control_icons").hide();
           menu_show = true;
+          $(".video_frame").animate({opacity:1},250);
           setTimeout(function(){
             $(".video_frame")[swiper.activeIndex].play();
           },250);
@@ -854,7 +867,7 @@ $(".add_sound, .add_video").click(function(){
 });
 
 $(document).delegate(".marquee-disk, marquee","click",function(){
-  $(".btn_plus").click();
+  //$(".btn_plus").click();
   $(".sound_tab").slideDown();
   $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
 });
@@ -1133,6 +1146,37 @@ $(".btn_native_camera").click(function(){
   }, options);
   */
 
+});
+
+var font_weight = "normal";
+$(".font-weight").click(function(){
+  if(font_weight == "normal"){
+    font_weight = "highlight";
+  }else if(font_weight == "highlight"){
+    font_weight = "lowlight";
+  }else if(font_weight == "lowlight"){
+    font_weight = "normal";
+  }
+
+  $(".font-weight")
+  .removeClass("normal")
+  .removeClass("highlight")
+  .removeClass("lowlight")
+  .addClass(font_weight);
+});
+
+var text_align = "left";
+$(".text-align").click(function(){
+  if(text_align == "left"){
+    text_align = "right";
+  }else if(text_align == "right"){
+    text_align = "center";
+  }else if(text_align == "center"){
+    text_align = "left";
+  }
+
+  var src = "img/align-"+text_align+".png";
+  $(".text-align").css("background-image",'url("'+src+'")');
 });
 
 
