@@ -297,11 +297,10 @@ body {
 }
 #duet_video{
   background: #000;
-  position: fixed;
-  top: 0;
-  right: 0;
   width: 50% !important;
-  height: 100% !important;
+  float: right;
+  margin: 100px 0;
+  height: 280px
 }
 .btn_duet img{
   width: 36px !important;
@@ -320,13 +319,13 @@ body {
   display: block;
 }
 #canvas{
-    /*background: linear-gradient(rgba(255,0,0,0.7),rgba(0,0,0,0.2));*/
+    background: #000;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    box-shadow: 0 0 100px #ea4335 inset !important;
+
 }
 .page_title{
     font-family: 'Gugi', Montserrat;
@@ -497,7 +496,12 @@ body {
     display:inline;
 }
 .live_app_page {
-    background: linear-gradient(#2193b0,#6dd5ed);
+  background: linear-gradient(#2193b0,#6dd5ed);
+  height: 100%;
+  overflow: scroll;
+}
+.page_plus{
+  background: #111;
 }
 
 .page_programs, .page_radio, .page_article, .page_review, .page_blogs, .page_profile, .page_write, .page_mic{
@@ -624,10 +628,10 @@ body {
   margin: 0 auto;
   background: #ea4335;
   top: 0px;
-  position: fixed;
+
   left: 0;
   z-index: 100;
-  box-shadow: 0 2px 5px #f00;
+  position: fixed;
 }
 .duet_half video{
   float: left;
@@ -667,9 +671,9 @@ body {
     font-size: 34px;
 }
 .write_para{
-    padding: 12px;
-    font-size: 18px;
-    height: 250px;
+  padding: 12px;
+  font-size: 18px;
+  height: 150px;
 }
 .write_title::placeholder, .write_para::placeholder{
   color: #fff;
@@ -963,22 +967,22 @@ height: 100%;
   border-radius: 0 15px 15px 0;
 }
 .speed_opt_seleted{
-  background: rgb(0,0,0,0.9) !important;
+  background: #fff !important;
   font-weight: bold;
+  color: #000;
 }
 .filter_opt{
   width: 25px;
   height: 25px;
   float: left;
-  border: 2px solid #fff;
   margin-right: 10px;
   border-radius: 100%;
-  box-shadow: 0 0 5px #fff;
+  border:2px solid #333;
+  box-shadow: 0 0 5px #333;
 }
 .filter_opt_selected{
-  background: rgb(255,255,255,1) !important;
-  font-weight: bold;
-  color: #000;
+  border:2px solid #ffffff;
+  box-shadow: 0 0 5px #ffffff;
 }
 
 .timer_opt[type=range] {
@@ -1047,14 +1051,17 @@ height: 100%;
 .Aa{
   background: transparent;
   top: 100px;
-  left: 20%;
+  left: 30%;
   position: fixed;
   color: #fff;
   text-align: center;
-  width: 60%;
-  border: none;
+  width: 40%;
   font-size: 18px;
   font-weight: bold;
+  height: 26px;
+  resize: none;
+  border: coral;
+  border-radius: 5px;
 }
 .Aa::placeholder{
   color: #eee;
@@ -1088,6 +1095,20 @@ height: 100%;
   color: #fff;
 }
 
+.Aa_box .normal{
+
+}
+
+.Aa_box .highlight{
+  background: #fff;
+  color: #000;
+}
+
+.Aa_box .lowlight{
+  background: #333;
+  color: #fff;
+}
+
 .text-align{
   background-image: url(../img/align-left.png);
   height: 30px;
@@ -1099,25 +1120,102 @@ height: 100%;
 
 .font-style{
   padding: 4px;
-    border: 2px solid rgb(255,255,255,0.1);
+  border: 2px solid rgb(255,255,255,0.1);
 }
 
 .font-style-active{
-
+  border: 2px solid rgb(255,255,255,1);
 }
 
 .Classic{
 
+  font-family: Montserrat !important;
 }
 .Typewriter{
-
+  font-family: monospace !important;
 }
 .Handwriting{
-
+  font-family: cursive  !important;
 }
 .NEON{
-
+  font-weight: bold;
+      text-shadow: 0 0 10px #fff;
+      font-family: sans-serif !important;
 }
 .Serif{
+      font-family: serif !important;
+}
 
+.aa-formatting{
+  float: left;
+  width: 100%;
+  float: left;
+}
+
+.aa-color{
+
+}
+
+
+.apply_hashtag{
+  background: transparent;
+  color: #fff;
+  margin: 5px;
+  padding: 2px;
+  display: inline;
+  border-radius: 6px;
+  border: 2px solid #fff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.apply_tagfriend{
+  background: transparent;
+  color: #fff;
+  margin: 5px;
+  padding: 2px;
+  display: inline;
+  border-radius: 6px;
+  border: 2px solid #fff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.post_video_settings{
+  margin: 5px;
+  padding: 5px;
+}
+
+.video_settings{
+  color: #fff;
+  border-bottom: 1px solid #fff;
+  padding: 10px 0;
+  font-size: 18px;
+}
+.video_settings:last-child{
+  border-bottom: none;
+}
+.video_settings span{
+  background: transparent;
+  color: #fff;
+  margin: 5px;
+  padding: 2px;
+  display: inline;
+  border: 2px solid rgb(255,255,255,0.3);
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 5px;
+  outline: none;
+}
+.video_settings span.selected{
+  border: 2px solid rgb(255,255,255,1);
+}
+.post_video_settings .allow_block{
+
+}
+.post_video_settings .checked{
+  background-image: url(../img/tick.png);
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 32px;
 }

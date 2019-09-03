@@ -8,6 +8,8 @@ var progress_bar = 0;
 var progress_bar_duet = null;
 var default_timer     = 9;
 var babu_rao          = false;
+var duet_video = document.getElementById("duet_video");
+var sound_player = document.getElementById("sound_player");
 
 $(document).ready(function(){
 
@@ -45,9 +47,9 @@ $(document).ready(function(){
 
 
   $(videos).each(function(i, value){
-    //if(i <= 3){
+    if(i <= 3){
       $(".swiper-wrapper").append('<div class = "swiper-slide">'+
-        '<video loop class="video_frame">'+ //poster="img/loader.gif"
+        '<video loop class="video_frame" poster="img/loader.gif">'+
          '<source src="videos/'+videos[i]+'" type="video/mp4">'+
         '</video>'+
         '<div class="my_captain">'+
@@ -68,22 +70,29 @@ $(document).ready(function(){
          '</div>'+
         '</div>'+
       '</div>');
-    //}
+    }
   });
 
   $(document).delegate(".btn_share","click",function(){
     navigator.share("A Video from live app","Share","plain/text");
   });
 
+
+  duet_video.onloadedmetadata = function(e) {
+      default_timer = duet_video.duration;
+
+      console.log($("#duet_video").innerHeight());
+
+
+  };
+
   $(document).delegate(".btn_duet","click",function(){
-    $("#canvas").css("width","50%");
+
+
+
     $("#duet_video").fadeIn();
     $("#duet_video").children("source").attr("src","videos/"+videos[mySwiper.activeIndex]);
-    $("#duet_video")[0].load();
-    $("#duet_video")[0].play();
-    setTimeout(function(){
-      $("#duet_video")[0].pause();
-    },500);
+
 
     progress_bar = 0; //to start progess from 0
     $(".progress_bar").css("width","1px");
@@ -91,23 +100,39 @@ $(document).ready(function(){
     navigate("plus");
     try{
       var options = {
-        width: $(window).width(),
-        height: $(window).height(),
+        width: 280,
+        height: ($(window).width()/2),
         canvas: {
-          width: $(window).width(),
-          height: $(window).height()
+          width: 280,
+          height: ($(window).width()/2)
         },
         capture: {
-          width: $(window).width(),
-          height: $(window).height()
+          width: 280,
+          height: ($(window).width()/2)
         },
+
         cameraFacing: 'front',
-          fps: 30,
-          quality: 1,
+        fps: 30,
+        quality: 100,
       };
+
       window.plugin.CanvasCamera.start(options);
     }catch(e){}
     $(".bottom_nav").animate({bottom: "-50px"},750);
+
+
+
+    $("#canvas").css("width","50%");
+    $("#canvas").css("height","280px");
+    $("#canvas").css("margin","100px 0");
+    $("#canvas").css("position","relative");
+    $("#canvas").css("float","left");
+
+    $("#duet_video")[0].load();
+    $("#duet_video")[0].play();
+    setTimeout(function(){
+      $("#duet_video")[0].pause();
+    },500);
 
     //navigate("duet");
 
@@ -175,12 +200,12 @@ $(document).ready(function(){
   //pre load for better UI UX
   setTimeout(function(){
     $(".video_frame").each(function(index, elem){
-      //$(".video_frame")[index].play();
+      $(".video_frame")[index].play();
       setTimeout(function(){
         if(index != 0){
-          //$(".video_frame")[index].pause();
+          $(".video_frame")[index].pause();
         }
-      },100);
+      },150);
     });
   },500);
 
@@ -419,6 +444,8 @@ $(document).ready(function(){
     setTimeout(function(){
       $("#control_icons").hide();
     },500);
+
+    $(".video_frame").animate({opacity:1},250);
   }
   function pause_effect(){
     $("#control_icons").show();
@@ -474,6 +501,7 @@ $(document).ready(function(){
           console.log("Playing: "+swiper.activeIndex);
           $("#control_icons").hide();
           menu_show = true;
+
           $(".video_frame").animate({opacity:1},250);
           setTimeout(function(){
             $(".video_frame")[swiper.activeIndex].play();
@@ -629,7 +657,7 @@ $(document).ready(function(){
         $(".pre-loader").fadeOut();
 
         /*
-        swal({ //yahan
+        swal({
           //title: $(".category_active").children("span").text(),
           text: "Getting the '"+$(".category_active").children("span").text()+"' category..",
           icon: "img/load.gif",
@@ -747,7 +775,8 @@ $(document).ready(function(){
           var options = {
               //cameraPosition: 'front',
               cameraFacing: 'front',
-              fps: 10,
+              fps: 30,
+              quality: 100,
           };
           window.plugin.CanvasCamera.start(options);
         }catch(e){}
@@ -787,405 +816,374 @@ $(document).ready(function(){
     $(".nav-3").removeClass("nav-3-active");
     $(this).addClass("nav-3-active");
   });
-});
 
-function volumeupbutton(){
-  if(global_volume >= 100){
-    global_volume = 100;
-  }else{
-    global_volume += 10;
-  }
-
-  $(".bottom_nav_volume").css("width",global_volume+"%");
-  window.androidVolume.setMusic(global_volume, false, function(success){
-    //alert(global_volume);
-  }, function(error){
-    //alert("ERROR UP");
+  $(".show_effect_tab").click(function(){
+    $(".effect_tab").slideDown();
   });
-}
-function volumedownbutton(){
-  if(global_volume <= 0){
-    global_volume = 0;
-  }else{
-    global_volume -= 10;
-  }
 
-  $(".bottom_nav_volume").css("width",global_volume+"%");
-  window.androidVolume.setMusic(global_volume, false, function(success){
-    //alert(global_volume);
-  }, function(error){
-    //alert("ERROR DOWN");
+  var effect_tab = 1;
+  $(".effect_tab img").click(function(){
+    if(effect_tab < 5){
+      effect_tab++;
+    }else{
+      effect_tab = 1;
+    }
+    $(".effect_tab img").attr("src","img/camera_opt/effect_tab_"+effect_tab+".png");
   });
-}
 
-$(".show_effect_tab").click(function(){
-  $(".effect_tab").slideDown();
-});
-
-var effect_tab = 1;
-$(".effect_tab img").click(function(){
-  if(effect_tab < 5){
-    effect_tab++;
-  }else{
-    effect_tab = 1;
-  }
-  $(".effect_tab img").attr("src","img/camera_opt/effect_tab_"+effect_tab+".png");
-});
-
-$("#canvas").click(function(){
-  $(".effect_tab").fadeOut();
-  $(".settings_box").fadeOut();
-});
-$(".filter_opt").click(function(){
-  $(".filter_opt").removeClass("filter_opt_selected");
-  $(this).addClass("filter_opt_selected");
-});
-
-
-$(".timer_input").on("input",function(){
-  default_timer = +$(this).val();
-  $(".default_timer").text(default_timer+" secs");
-});
-
-$(".show_gallery_tab").click(function(){
-  $(".gallery_attachment").click();
-});
-
-$(".gallery_attachment").change(function(){
-  swal({
-    title: "One monent..",
-    text: "Getting your video ready",
-    icon: "img/load.gif",
-    button:false,
-    timer:2000,
+  $("#canvas").click(function(){
+    $(".effect_tab").fadeOut();
+    $(".settings_box").fadeOut();
   });
-});
-
-$(".add_sound, .add_video").click(function(){
-  $(".sound_tab").slideDown();
-  $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
-});
-
-$(document).delegate(".marquee-disk, marquee","click",function(){
-  //$(".btn_plus").click();
-  $(".sound_tab").slideDown();
-  $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
-});
-
-var sound_tab_clicks = 0;
-$(".sound_tab").click(function(){
-  if(sound_tab_clicks == 0){
-    $(".sound_tab img").attr("src","img/camera_opt/add_sound_2.png");
-    sound_tab_clicks++;
-    $('.sound_player')[0].load();
-    $('.sound_player')[0].play();
-  }else{
-    sound_tab_clicks = 0;
-    $(".sound_tab").slideUp();
-    $('.sound_player')[0].pause();
-    $('.sound_player')[0].load();
-
-    babu_rao = true;
-    //babu rao
-    default_timer = 6.5;
-  }
-});
-
-$(".demo_loading").click(function(){
-  swal({
-    icon: "img/load.gif",
-    button:false,
-    timer:1000,
+  $(".filter_opt").click(function(){
+    $(".filter_opt").removeClass("filter_opt_selected");
+    $(this).addClass("filter_opt_selected");
   });
-});
 
-var demo_beauty = false;
-$(".demo_beauty").click(function(){
-  var demo_beauty_text = "";
-  if(demo_beauty == false){
-    demo_beauty = true;
+
+  $(".timer_input").on("input",function(){
+    default_timer = +$(this).val();
+    $(".default_timer").text(default_timer+" secs");
+  });
+
+  $(".show_gallery_tab").click(function(){
+    $(".gallery_attachment").click();
+  });
+
+  $(".gallery_attachment").change(function(){
     swal({
-      text: "Beauty mode is ON",
-      icon: "success",
+      title: "One monent..",
+      text: "Getting your video ready",
+      icon: "img/load.gif",
+      button:false,
+      timer:2000,
+    });
+  });
+
+  $(".add_sound, .add_video").click(function(){
+    $(".sound_tab").slideDown();
+    $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
+  });
+
+  $(document).delegate(".marquee-disk, marquee","click",function(){
+    //$(".btn_plus").click();
+    $(".sound_tab").slideDown();
+    $(".sound_tab img").attr("src","img/camera_opt/add_sound.png");
+  });
+
+  var sound_tab_clicks = 0;
+  $(".sound_tab").click(function(){
+    if(sound_tab_clicks == 0){
+      $(".sound_tab img").attr("src","img/camera_opt/add_sound_2.png");
+      sound_tab_clicks++;
+      $('.sound_player')[0].load();
+      $('.sound_player')[0].play();
+    }else{
+      sound_tab_clicks = 0;
+      $(".sound_tab").slideUp();
+      $('.sound_player')[0].pause();
+      $('.sound_player')[0].load();
+
+      babu_rao = true;
+      //babu rao
+      default_timer = 6.5;
+    }
+  });
+
+  $(".demo_loading").click(function(){
+    swal({
+      icon: "img/load.gif",
       button:false,
       timer:1000,
     });
+  });
 
-    $(this).children("img").attr("src","img/camera_opt/beauty.png");
-  }else{
-    demo_beauty = false;
-    swal({
-      text: "Beauty mode is OFF",
-      icon: "info",
-      button:false,
-      timer:1000,
-    });
-    $(this).children("img").attr("src","img/camera_opt/beauty-off.png");
-  }
-
-});
-
-
-
-//var demo_speed = 0;
-$(".demo_speed").click(function(){
-  $(".settings_box").hide();
-
-  //if($(".camera_speed").is(":visible")){
-    //$(".camera_speed").fadeOut();
-  //}else{
-    $(".camera_speed").fadeIn();
-  //}
-
-});
-$(".demo_filter").click(function(){
-  $(".settings_box").hide();
-  $(".filter_box").fadeIn();
-});
-
-
-
-
-$(".speed_opt").click(function(){
-  $(".speed_opt").removeClass("speed_opt_seleted");
-  $(this).addClass("speed_opt_seleted");
-});
-
-//var demo_timer = 3;
-$(".demo_timer").click(function(){
-  $(".settings_box").hide();
-  $(".timer_box").fadeIn();
-
-  $(".default_timer").text(default_timer+" secs");
-
-  /*if(demo_timer < 12){
-    demo_timer += 3;
-  }else{
-    demo_timer = 3;
-  }
-  $(this).children("p").children("small").html(demo_timer+"x");
-  */
-});
-
-$(".demo_volume").click(function(){
-  $(".settings_box").hide();
-  $(".volume_box").fadeIn();
-});
-
-$(".demo_Aa").click(function(){
-  $(".settings_box").hide();
-  $(".Aa_box").fadeIn();
-});
-
-
-
-
-
-
-var make_opacity = ".camera_opt_top, .camera_opt_right, .show_effect_tab, .show_gallery_tab";
-
-var btn_native_camera   = document.getElementById("btn_native_camera");
-btn_native_camera.addEventListener('touchstart', function(){
-  $(".settings_box").fadeOut();
-
-  $(make_opacity).animate({
-    opacity:0.05
-  },500);
-
-  if(babu_rao == true){
-    $('.sound_player')[0].play();
-  }
-
-  $("#duet_video")[0].play();
-  //$("#canvas").css("height",$("#duet_video").height()+"px");
-  //console.log($("#duet_video").height());
-  progress_bar_allow = true;
-  progress_bar_duet = setInterval(function(){
-      console.log("true");
-
-      progress_bar+=0.1;
-      if(progress_bar >= default_timer){
-        swal({
-          //title: "Top result:",
-          text: "Please wait..",
-          icon: "img/load.gif",
-          button:false,
-          timer:2000,
-        }).then((value) => {
-          progress_bar = 0;
-
-          $(make_opacity).animate({
-            opacity:1
-          },500);
-
-          clearInterval(progress_bar_duet);
-          swal({
-            title: "Publish Video ?",
-            text: "Saved saved in gallery!",
-            icon: "info",
-            buttons: true,
-            dangerMode: false,
-
-            buttons: ["Reshoot", "Next"],
-          }).then((value) => {
-            swal.close();
-            if(value != null){
-              //navigate("video_step_2");
-              var page = "video_step_2";
-              $(".live_app_page").hide();
-              $(".pre-loader").show();
-              setTimeout(function(){
-                $(".pre-loader").hide();
-                $("."+page).show();
-                $(".pre-loader").fadeOut();
-              },200);
-            }else{}
-          });
-        });
-      }
-
-      var percentage = (progress_bar*100)/default_timer;
-      $(".progress_bar").width(percentage+"%");
-  },100);
-  $("#btn_native_camera").addClass("fa-spin");
-},false);
-btn_native_camera.addEventListener('touchend', function(){
-
-  $(make_opacity).animate({
-    opacity:1
-  },500);
-
-  if(babu_rao == true){
-    $('.sound_player')[0].pause();
-  }
-
-
-  $("#duet_video")[0].pause();
-  clearInterval(progress_bar_duet);
-  $("#btn_native_camera").removeClass("fa-spin");
-},false);
-
-
-
-$(".btn_native_camera").click(function(){
-  /*
-  var options = {limit: 1,duration: 5};
-  navigator.device.capture.captureVideo(function(mediaFiles) {
-
-    videoPath = mediaFiles[0].fullPath;
-    var options = new FileUploadOptions();
-    options.fileKey = "file";
-    options.fileName = videoPath.substr(videoPath.lastIndexOf('/') + 1);
-    options.mimeType = "video/mp4/3gp";
-
-    $(".new_video").attr("src",videoPath);
-
-    */
-
-    setTimeout(function(){
-      /*
-      mySwiper.appendSlide('<div class = "swiper-slide">'+
-        '<video loop class="video_frame" poster="img/loader.gif">'+
-         '<source src="'+videoPath+'" type="video/mp4">'+
-        '</video>'+
-        '<div class="my_captain">'+
-          '<p class="name">My Video</p>'+
-          '<p class="tag btn_profile" data-menu="menu-profile" data-menu-type="menu-box-top"><i class="fa fa-user-circle"></i> Ghulam Abbass <span class="media_time">Just now <i class="fa fa-clock"></i></span></p>'+
-          '<p class="desc">Hey this is my first live video</p>'+
-          '<div class="video_opt_container">'+
-            '<div class="video_opt like"><i class="fa fa-heart"></i><span>1</span></div>'+
-            '<div class="video_opt"><i class="fa fa-comment"></i><span>0</span></div>'+
-            '<div class="video_opt"><i class="fa fa-share-alt"></i><span>0</span></div>'+
-         '</div>'+
-        '</div>'+
-      '</div>');
-      */
-
-      //navigate("home");
-    },3000);
-
-    /*var params = new Object();
-    params.profile_id  = global_id;
-    params.edit_profile	= "true";
-    params.profile_pic 	= "true";
-    options.params = params;
-    options.chunkedMode = false;
-    var ft = new FileTransfer();
-    $(".profile_btn_camera").html("<i class='fa fa-circle-o-notch fa-spin'></i>");
-    $(".profile_photo, .global_photo").attr("src","images/face.gif");
-    */
-
-    /*
-    $(".profile_photo").hide();
-    $(".my_profile_canvas").show();
-    $(".my_profile_canvas").css("display","block");
-    video_to_image(videoPath,"my_profile_canvas");
-    */
-
-    /*
-    ft.upload(videoPath, base_url+"get_profile.php", function(result){
-
-      cordova.plugins.notification.local.schedule({
-        title: 'Face ID Video Uploaded',
-        progressBar: { value: 100 }
+  var demo_beauty = false;
+  $(".demo_beauty").click(function(){
+    var demo_beauty_text = "";
+    if(demo_beauty == false){
+      demo_beauty = true;
+      swal({
+        text: "Beauty mode is ON",
+        icon: "success",
+        button:false,
+        timer:1000,
       });
 
-      $(".profile_photo, .global_photo").attr("src","images/face.png");
+      $(this).children("img").attr("src","img/camera_opt/beauty.png");
+    }else{
+      demo_beauty = false;
+      swal({
+        text: "Beauty mode is OFF",
+        icon: "info",
+        button:false,
+        timer:1000,
+      });
+      $(this).children("img").attr("src","img/camera_opt/beauty-off.png");
+    }
 
-      //$(".global_photo").attr("src","images/default_image.jpg");
-      $(".profile_btn_camera").html("<i class='fa fa-camera'></i>");
+  });
+
+
+
+  //var demo_speed = 0;
+  $(".demo_speed").click(function(){
+    $(".settings_box").hide();
+
+    //if($(".camera_speed").is(":visible")){
+      //$(".camera_speed").fadeOut();
+    //}else{
+      $(".camera_speed").fadeIn();
+    //}
+
+  });
+  $(".demo_filter").click(function(){
+    $(".settings_box").hide();
+    $(".filter_box").fadeIn();
+  });
+
+
+
+
+  $(".speed_opt").click(function(){
+    $(".speed_opt").removeClass("speed_opt_seleted");
+    $(this).addClass("speed_opt_seleted");
+
+    var speed = +$(this).attr("speed");
+    duet_video.defaultPlaybackRate = speed;
+
+    sound_player.defaultPlaybackRate = speed;
+    sound_player.load();
+
+    default_timer = (duet_video.duration)*speed;
+    progress_bar = 0;
+
+    $("#duet_video")[0].load();
+    $("#duet_video")[0].play();
+    setTimeout(function(){
+      $("#duet_video")[0].pause();
+    },500);
+  });
+
+  //var demo_timer = 3;
+  $(".demo_timer").click(function(){
+    $(".settings_box").hide();
+    $(".timer_box").fadeIn();
+
+    $(".default_timer").text(default_timer+" secs");
+
+    /*if(demo_timer < 12){
+      demo_timer += 3;
+    }else{
+      demo_timer = 3;
+    }
+    $(this).children("p").children("small").html(demo_timer+"x");
+    */
+  });
+
+  $(".demo_volume").click(function(){
+    $(".settings_box").hide();
+    $(".volume_box").fadeIn();
+  });
+
+  $(".demo_Aa").click(function(){
+    $(".settings_box").hide();
+    $(".Aa_box").fadeIn();
+  });
+
+
+
+
+
+
+  var make_opacity = ".camera_opt_top, .camera_opt_right, .show_effect_tab, .show_gallery_tab";
+
+  var btn_native_camera   = document.getElementById("btn_native_camera");
+  btn_native_camera.addEventListener('touchstart', function(){
+    $(".settings_box").fadeOut();
+
+    $(make_opacity).animate({
+      opacity:0.05
+    },500);
+
+    if(babu_rao == true){
+      $('.sound_player')[0].play();
+    }
+
+    $("#duet_video")[0].play();
+    //$("#canvas").css("height",$("#duet_video").height()+"px");
+    //console.log($("#duet_video").height());
+    progress_bar_allow = true;
+    progress_bar_duet = setInterval(function(){
+        console.log("true");
+
+        progress_bar+=0.1;
+        if(progress_bar >= default_timer){
+          swal({
+            //title: "Top result:",
+            text: "Please wait..",
+            icon: "img/load.gif",
+            button:false,
+            timer:2000,
+          }).then((value) => {
+            progress_bar = 0;
+
+            $(make_opacity).animate({
+              opacity:1
+            },500);
+
+            clearInterval(progress_bar_duet);
+            swal({
+              title: "Publish Video ?",
+              text: "Saved saved in gallery!",
+              icon: "info",
+              buttons: true,
+              dangerMode: false,
+
+              buttons: ["Reshoot", "Next"],
+            }).then((value) => {
+              swal.close();
+              if(value != null){
+                //navigate("video_step_2");
+                var page = "video_step_2";
+                $(".live_app_page").hide();
+                $(".pre-loader").show();
+                setTimeout(function(){
+                  $(".pre-loader").hide();
+                  $("."+page).show();
+                  $(".pre-loader").fadeOut();
+                },200);
+              }else{}
+            });
+          });
+        }
+
+        var percentage = (progress_bar*100)/default_timer;
+        $(".progress_bar").width(percentage+"%");
+    },100);
+    $("#btn_native_camera").addClass("fa-spin");
+  },false);
+  btn_native_camera.addEventListener('touchend', function(){
+
+    $(make_opacity).animate({
+      opacity:1
+    },500);
+
+    if(babu_rao == true){
+      $('.sound_player')[0].pause();
+    }
+
+
+    $("#duet_video")[0].pause();
+    clearInterval(progress_bar_duet);
+    $("#btn_native_camera").removeClass("fa-spin");
+  },false);
+
+
+  var font_weight = "normal";
+  $(".font-weight").click(function(){
+    if(font_weight == "normal"){
+      font_weight = "highlight";
+    }else if(font_weight == "highlight"){
+      font_weight = "lowlight";
+    }else if(font_weight == "lowlight"){
+      font_weight = "normal";
+    }
+
+    $(".font-weight, .Aa")
+    .removeClass("normal")
+    .removeClass("highlight")
+    .removeClass("lowlight")
+    .addClass(font_weight);
+  });
+  var text_align = "left";
+  $(".text-align").click(function(){
+    if(text_align == "left"){
+      text_align = "right";
+    }else if(text_align == "right"){
+      text_align = "center";
+    }else if(text_align == "center"){
+      text_align = "left";
+    }
+    $(".Aa").css("text-align",text_align);
+
+    var src = "img/align-"+text_align+".png";
+    $(".text-align").css("background-image",'url("'+src+'")');
+  });
+  $(".font-style").click(function(){
+    $(".font-style").removeClass("font-style-active");
+    $(this).addClass("font-style-active");
+    $(".Aa").removeClass("Classic Typewriter Handwriting NEON Serif").addClass($(this).attr("my_font"));
+
+
+  });
+  $(".apply_hashtag").click(function(){
+    $(".video_desc").val($(".video_desc").val()+"#");
+  });
+  $(".apply_tagfriend").click(function(){
+    $(".video_desc").val($(".video_desc").val()+"@");
+  });
+  $(".video_settings span").click(function(){
+    $(".video_settings span").removeClass("selected")
+    $(this).addClass("selected");
+  });
+  $(".allow_block").click(function(){
+    $(this).toggleClass("checked");
+  });
+  $(".video_post").click(function(){
+    swal({
+      title: "Video Posted!",
+      text: "It will appear in a while",
+      icon: "success",
+      button:false,
+      timer:2000,
+    }).then((value) => {
+      navigate("home");
+    });
+  });
+  function volumeupbutton(){
+    if(global_volume >= 100){
+      global_volume = 100;
+    }else{
+      global_volume += 10;
+    }
+
+    $(".bottom_nav_volume").css("width",global_volume+"%");
+    window.androidVolume.setMusic(global_volume, false, function(success){
+      //alert(global_volume);
     }, function(error){
-      //alert(JSON.stringify(error));
-     }, options);
-     */
+      //alert("ERROR UP");
+    });
+  }
+  function volumedownbutton(){
+    if(global_volume <= 0){
+      global_volume = 0;
+    }else{
+      global_volume -= 10;
+    }
 
-
-
-     /*
-  }, function(error) {
-  }, options);
-  */
-
-});
-
-var font_weight = "normal";
-$(".font-weight").click(function(){
-  if(font_weight == "normal"){
-    font_weight = "highlight";
-  }else if(font_weight == "highlight"){
-    font_weight = "lowlight";
-  }else if(font_weight == "lowlight"){
-    font_weight = "normal";
+    $(".bottom_nav_volume").css("width",global_volume+"%");
+    window.androidVolume.setMusic(global_volume, false, function(success){
+      //alert(global_volume);
+    }, function(error){
+      //alert("ERROR DOWN");
+    });
   }
 
-  $(".font-weight")
-  .removeClass("normal")
-  .removeClass("highlight")
-  .removeClass("lowlight")
-  .addClass(font_weight);
+
+
+
+
 });
 
-var text_align = "left";
-$(".text-align").click(function(){
-  if(text_align == "left"){
-    text_align = "right";
-  }else if(text_align == "right"){
-    text_align = "center";
-  }else if(text_align == "center"){
-    text_align = "left";
-  }
-
-  var src = "img/align-"+text_align+".png";
-  $(".text-align").css("background-image",'url("'+src+'")');
-});
 
 
 var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-        document.addEventListener("volumeupbutton", volumeupbutton, false);
-        document.addEventListener("volumedownbutton", volumedownbutton, false);
+        //document.addEventListener("volumeupbutton", volumeupbutton, false);
+        //document.addEventListener("volumedownbutton", volumedownbutton, false);
     },
 
     // deviceready Event Handler

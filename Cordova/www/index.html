@@ -400,20 +400,21 @@
           </div>
 
           <div class="demo_Aa">
-            <img src="img/camera_opt/music.png" />
+            <img src="img/camera_opt/character.png" />
             <p>Chatacter</p>
           </div>
         </div>
 
         <div class="camera_settings">
           <div class="settings_box camera_speed">
-            <div class="speed_opt">0.3x</div>
-            <div class="speed_opt">0.5x</div>
-            <div class="speed_opt speed_opt_seleted">1x</div>
-            <div class="speed_opt">2x</div>
-            <div class="speed_opt">3x</div>
+            <div speed="0.3" class="speed_opt">0.3x</div>
+            <div speed="0.5" class="speed_opt">0.5x</div>
+            <div speed="1" class="speed_opt speed_opt_seleted">1x</div>
+            <div speed="2" class="speed_opt">2x</div>
+            <div speed="3" class="speed_opt">3x</div>
           </div>
           <div class="settings_box filter_box">
+            <div style="background: #eeeeee;" class="filter_opt filter_opt_selected"></div>
             <div style="background: #4285f4;" class="filter_opt"></div>
             <div style="background: #ea4335;" class="filter_opt"></div>
             <div style="background: #fbbc05;" class="filter_opt"></div>
@@ -441,11 +442,11 @@
             <div class="aa-formatting">
               <div class="font-weight normal">A</div>
               <div class="text-align"></div>
-              <div class="font-style Classic font-style-active">Classic</div>
-              <div class="font-style Typewriter">Typewriter</div>
-              <div class="font-style Handwriting">Handwriting</div>
-              <div class="font-style NEON">NEON</div>
-              <div class="font-style Serif">Serif</div>
+              <div my_font="Classic" class="font-style Classic font-style-active">Classic</div>
+              <div my_font="Typewriter" class="font-style Typewriter">Typewriter</div>
+              <div my_font="Handwriting" class="font-style Handwriting">Handwriting</div>
+              <div my_font="NEON" class="font-style NEON">NEON</div>
+              <div my_font="Serif" class="font-style Serif">Serif</div>
             </div>
 
 
@@ -477,7 +478,7 @@
 
       <div class="sound_tab">
         <img src="img/camera_opt/add_sound.png" alt="" />
-          <audio class="sound_player" controls>
+        <audio id="sound_player" class="sound_player" controls>
           <source src="audio/audio.ogg" type="audio/ogg">
           <source src="audio/audio.mp3" type="audio/mpeg">
         </audio>
@@ -732,17 +733,34 @@
         <h1 class="page_title">Publish Video</h1>
 
         <input placeholder="Title..." class="write_title" />
-        <textarea placeholder="Write text here.." class="write_para"></textarea>
+        <textarea placeholder="Write text here.." class="write_para video_desc"></textarea>
 
-        #hashtag
-        @tagfriend
-        1. Who can view this video (public, friends, private)
-        2. comments off
-        3. duet / react
-        4. save to album
+        <span class="apply_hashtag">#hashtag</span>
+        <span class="apply_tagfriend">@friend</span>
+
+        <div class="post_video_settings">
+          <div class="video_settings">
+            1. Who can view this video<br/>
+            <span class="selected">Public</span>
+            <span class="">Friends</span>
+            <span class="">Private</span>
+          </div>
+          <div class="video_settings allow_block checked">
+            2. Comments off
+          </div>
+          <div class="video_settings allow_block checked">
+            3. Duet / React
+          </div>
+          <div class="video_settings allow_block checked">
+            4. Save to album
+          </div>
+        </div>
 
 
-        <button type="button" class="write_publish"><i class="fa fa-check"></i> Post</button>
+
+
+
+        <button style="margin-bottom: 50px;" type="button" class="write_publish video_post"><i class="fa fa-check"></i> Post</button>
 
 
 
