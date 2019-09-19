@@ -20,10 +20,11 @@ class _BottomNavigation extends State<BottomNavigation> {
           color: Colors.grey[700],
         ),
         Container(
-          height: 47,
+          //height: 82,
           color: Colors.transparent,
           child: Padding(
               padding: EdgeInsets.only(top: 7),
+
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -33,20 +34,13 @@ class _BottomNavigation extends State<BottomNavigation> {
                     flex: 1,
                     child: Column(
                       children: <Widget>[
-                        Icon(
-                          AppIcons.home,
+                        IconButton(
+                          icon: new Icon(AppIcons.home),
                           color: Colors.white,
-                          size: 20,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/Menu');
+                          },
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: Dimen.textSpacing),
-                          child: Text(
-                            "Home",
-                            style: TextStyle(
-                                fontSize: Dimen.bottomNavigationTextSize,
-                                color: Colors.white),
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -54,20 +48,13 @@ class _BottomNavigation extends State<BottomNavigation> {
                     flex: 1,
                     child: Column(
                       children: <Widget>[
-                        Icon(
-                          AppIcons.search,
+                        IconButton(
+                          icon: new Icon(AppIcons.search),
                           color: Colors.white,
-                          size: 20,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/Discover');
+                          },
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: Dimen.textSpacing),
-                          child: Text(
-                            "Discover",
-                            style: TextStyle(
-                                fontSize: Dimen.bottomNavigationTextSize,
-                                color: Colors.white),
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -114,16 +101,13 @@ class _BottomNavigation extends State<BottomNavigation> {
                     flex: 1,
                     child: Column(
                       children: <Widget>[
-                        Icon(AppIcons.messages, color: Colors.white, size: 20),
-                        Padding(
-                          padding: EdgeInsets.only(top: Dimen.textSpacing),
-                          child: Text(
-                            "Inbox",
-                            style: TextStyle(
-                                fontSize: Dimen.bottomNavigationTextSize,
-                                color: Colors.white),
-                          ),
-                        )
+                        IconButton(
+                          icon: new Icon(AppIcons.messages),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/Inbox');
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -131,21 +115,21 @@ class _BottomNavigation extends State<BottomNavigation> {
                     flex: 1,
                     child: Column(
                       children: <Widget>[
-                        Icon(AppIcons.profile, color: Colors.white, size: 20),
-                        Padding(
-                          padding: EdgeInsets.only(top: Dimen.textSpacing),
-                          child: Text(
-                            "Me",
-                            style: TextStyle(
-                                fontSize: Dimen.bottomNavigationTextSize,
-                                color: Colors.white),
-                          ),
-                        )
+                        IconButton(
+                          icon: new Icon(AppIcons.profile),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/Me');
+                          },
+                        ),
                       ],
                     ),
                   )
+
                 ],
-              )),
+
+                )
+          ),
         )
       ],
     );
