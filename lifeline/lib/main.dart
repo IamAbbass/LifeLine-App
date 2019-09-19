@@ -67,7 +67,7 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Life Line Categories"),
+        title: Text("All Categories"),
 
         //leading: Icon(Icons.person),
     ),
