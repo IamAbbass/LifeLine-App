@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tiktok_clone/bottom_nav_bar.dart';
 import 'package:tiktok_clone/pages/home_page.dart';
 import 'package:tiktok_clone/widgets/home/home_header.dart';
@@ -59,6 +60,8 @@ const List<Category> choices = const <Category>[
 ];
 
 class Menu extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,25 +70,69 @@ class Menu extends StatelessWidget {
         //leading: Icon(Icons.person),
     ),
 
-      body: ListView.builder(
-        itemCount: choices.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(choices[index].title),
-            leading: Icon(choices[index].icon),
-            subtitle: Text(choices[index].subtitle),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailScreen(todo: choices[index]),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      body: new GridView.builder(
+          itemCount: choices.length,
+          gridDelegate:
+          new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          itemBuilder: (BuildContext context, int index) {
+            return new GestureDetector(
 
+
+              child: new Card(
+                elevation: 5.0,
+                child: new Container(
+                  alignment: Alignment.center,
+                  child: new Column(
+                    children: <Widget>[
+                      new Text(""),
+                      new Icon(
+                        choices[index].icon,
+                        size: 36,
+                      ),
+                      new Text(""),
+                      new Text(
+                          choices[index].title,
+                          style: TextStyle(fontSize: 18),
+                      ),
+                      //new Text(choices[index].subtitle),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  child: new CupertinoAlertDialog(
+                    title: new Column(
+                      children: <Widget>[
+
+                        new Icon(
+                          choices[index].icon, size: 36,
+                        ),
+                        new Text(choices[index].title),
+                      ],
+                    ),
+                    content: new Text(choices[index].subtitle),
+                    actions: <Widget>[
+                      new FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailScreen(todo: choices[index]),
+                              ),
+                            );
+                          },
+                          child: new Text("OK"))
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+          )
 
     );
   }
