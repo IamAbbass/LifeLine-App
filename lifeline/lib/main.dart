@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tiktok_clone/bottom_nav_bar.dart';
-import 'package:tiktok_clone/pages/home_page.dart';
-import 'package:tiktok_clone/widgets/home/home_header.dart';
+import 'package:lifeline/bottom_nav_bar.dart';
+import 'package:lifeline/pages/home_page.dart';
+import 'package:lifeline/widgets/home/home_header.dart';
 
 void main() => runApp(MyApp());
 

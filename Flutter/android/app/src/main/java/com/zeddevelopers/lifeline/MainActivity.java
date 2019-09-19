@@ -1,4 +1,4 @@
-package com.maxwellcofie.tiktok_clone;
+package com.zeddevelopers.lifeline;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
