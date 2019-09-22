@@ -29,6 +29,7 @@ Widget userProfile() {
                   shape: BoxShape.circle),
             )
           ],
+
         )
       ],
     ),

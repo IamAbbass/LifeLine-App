@@ -11,12 +11,14 @@ Widget homeHeader() {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Text(
             AppStrings.followingString,
             style: TextStyle(
                 color: Colors.grey, fontSize: 18, fontWeight: FontWeight.w500),
+
           ),
         ),
         Text("|",
@@ -29,7 +31,19 @@ Widget homeHeader() {
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.w500)),
-        )
+        ),
+        Text("|",
+            style: TextStyle(
+                fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
+        Padding(
+          padding: EdgeInsets.only(left: 10, right: 10),
+          child: Text(
+            AppStrings.nearByString,
+            style: TextStyle(
+                color: Colors.grey, fontSize: 18, fontWeight: FontWeight.w500),
+          ),
+        ),
+
       ],
     ),
   );
