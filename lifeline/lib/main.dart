@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lifeline/bottom_nav_bar.dart';
-import 'package:lifeline/pages/home_page.dart';
-import 'package:lifeline/widgets/home/home_header.dart';
+import 'package:lifeline/resources/dimen.dart';
+import 'package:lifeline/animations/spinner_animation.dart';
+import 'package:lifeline/resources/assets.dart';
+import 'package:lifeline/widgets/home/audio_spinner_icon.dart';
+import 'package:lifeline/resources/dimen.dart';
+import 'package:video_player/video_player.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
   @override
   Widget build(BuildContext context) {
+
+
     return MaterialApp(
       initialRoute: '/',
       routes: {
@@ -17,17 +27,262 @@ class MyApp extends StatelessWidget {
         '/PlusVideo': (context) => PlusVideo(),
         '/Inbox': (context) => Inbox(),
         '/Me': (context) => Me(),
+        '/Profile': (context) => Profile(),
         '/TextCategory': (context) => TextCategory(),
       },
-
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: Scaffold(
+        key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
-            HomeScreen(),
+            PageView.builder(
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, position) {
+                  return Container(
+                    color: Colors.black,
+                    child: Stack(
+                      children: <Widget>[
+
+                        AppVideoPlayer(),
+
+
+                        Container(
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(flex: 5, child: Container(
+                              padding: EdgeInsets.only(left: 16, bottom: 60),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 7, bottom: 7),
+                                    child: Text(
+                                      "@mcofie",
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 4, bottom: 7),
+                                    child: Text(
+                                        "Lorem ipsum dolor sit amet, consectetur "
+                                            "adipiscing elit, "
+                                            "sed do eiusmod tempor.",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w300)),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.music_note,
+                                        size: 19,
+                                        color: Colors.white,
+                                      ),
+                                      Text(
+                                        "Lorem ipsum dolor sit amet ...",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w300),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding: EdgeInsets.only(bottom: 60, right: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    //userProfile(),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            child: Icon(AppIcons.profile,
+                                              color: Colors.white,
+                                              size: 35,),
+                                            onTap: (){
+                                              Navigator.pushNamed(context, '/Profile');
+                                            },
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
+                                            child: Text(
+                                              "Profile",
+                                              style: TextStyle(fontSize: 10, color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            child: Icon(AppIcons.heart,
+                                              color: Colors.white,
+                                              size: 35,),
+                                            onTap: (){
+                                              //Navigator.pushNamed(context, '/TextCategory');
+                                            },
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
+                                            child: Text(
+                                              "17.8k",
+                                              style: TextStyle(fontSize: 10, color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            child: Icon(AppIcons.chat_bubble,
+                                              color: Colors.white,
+                                              size: 35,),
+                                            onTap: (){
+                                              Navigator.pushNamed(context, '/TextCategory');
+                                            },
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
+                                            child: Text(
+                                              "130",
+                                              style: TextStyle(fontSize: 10, color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      child: Column(
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            child: Icon(AppIcons.reply,
+                                              color: Colors.white,
+                                              size: 35,),
+                                            onTap: (){
+                                              Navigator.pushNamed(context, '/TextCategory');
+                                            },
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
+                                            child: Text(
+                                              "Share",
+                                              style: TextStyle(fontSize: 10, color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SpinnerAnimation(
+                                        body: audioSpinner())
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                      ],
+                    ),
+                  );
+                },
+                itemCount: 10),
             BottomNavigation(),
-            homeHeader(),
+            Container(
+              margin: EdgeInsets.only(top: 40),
+              height: Dimen.headerHeight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: IconButton(
+                      icon: new Icon(Icons.directions_run),
+                      tooltip: "Following",
+                      color: Colors.teal,
+                      onPressed: () {
+                        _scaffoldKey.currentState.showSnackBar(
+                            SnackBar(
+                              content: Text('Following Videos'),
+                              duration: Duration(seconds: 1),
+                            ));
+                      },
+                    ),
+                  ),
+                  Text("|",
+                      style: TextStyle(
+                          fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: IconButton(
+                      icon: new Icon(Icons.play_for_work),
+                      tooltip: "For You",
+                      color: Colors.grey,
+                      onPressed: () {
+                        _scaffoldKey.currentState.showSnackBar(
+                            SnackBar(
+                              content: Text('For You Videos'),
+                              duration: Duration(seconds: 1),
+                            ));
+                      },
+                    ),
+
+                    /*
+          child: Text(AppStrings.forYouString,
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500)),
+                  */
+                  ),
+                  Text("|",
+                      style: TextStyle(
+                          fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: IconButton(
+                      icon: new Icon(Icons.location_on),
+                      tooltip: "Near By",
+                      color: Colors.grey,
+                      onPressed: () {
+                        _scaffoldKey.currentState.showSnackBar(
+                            SnackBar(
+                              content: Text('Near By Videos'),
+                              duration: Duration(seconds: 1),
+                            ));
+                      },
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -215,8 +470,6 @@ class CategoryPage extends StatelessWidget {
     );
   }
 }
-
-
 class Discover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -289,14 +542,28 @@ class Me extends StatelessWidget {
     );
   }
 }
-
-
+class Profile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("me"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
 class TextCategory extends StatefulWidget {
   @override
   TextCategoryState createState() => new TextCategoryState();
 }
-
-
 class TextCategoryState extends State<TextCategory>{
   int listItemCount = 3;
 
@@ -369,7 +636,6 @@ class TextCategoryState extends State<TextCategory>{
     );
   }
 }
-
 class TextWrite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -385,6 +651,82 @@ class TextWrite extends StatelessWidget {
   }
 }
 
+
+class AppVideoPlayer extends StatefulWidget {
+  @override
+  _AppVideoPlayerState createState() => _AppVideoPlayerState();
+}
+
+class _AppVideoPlayerState extends State<AppVideoPlayer> {
+  VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(
+        'https://www.sample-videos.com/video123/mp4/240/big_buck_bunny_240p_5mb.mp4')
+      ..initialize().then((_) {
+        _controller.play();
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: _controller.value.initialized
+          ? AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: VideoPlayer(_controller),
+      )
+          : Container(
+        color: Colors.black,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}
+
+Widget userProfile() {
+  return Padding(
+    padding: EdgeInsets.only(top: 10, bottom: 10),
+    child: Column(
+      children: <Widget>[
+        Stack(
+          alignment: AlignmentDirectional.center,
+          children: <Widget>[
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.white,
+                      width: 1.0,
+                      style: BorderStyle.solid),
+                  color: Colors.black,
+                  shape: BoxShape.circle),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 50),
+              height: 18,
+              width: 18,
+              child: Icon(Icons.add, size: 10, color: Colors.white),
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(255, 42, 84, 1),
+                  shape: BoxShape.circle),
+            )
+          ],
+
+        )
+      ],
+    ),
+  );
+}
 
 /*
 class menu extends StatelessWidget {
