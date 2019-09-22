@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       },
 
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
       home: Scaffold(
         body: Stack(
           children: <Widget>[
@@ -67,6 +68,7 @@ class Menu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Life Line Categories"),
+
         //leading: Icon(Icons.person),
     ),
 
