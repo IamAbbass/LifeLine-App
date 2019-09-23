@@ -363,8 +363,22 @@ class Menu extends StatelessWidget {
                   Navigator.pushNamed(context, '/');
                 }else if(index == 1){ //Mugic
                   Navigator.pushNamed(context, '/');
-                }else if(index == 9){ //Video Page
+                }else if(index == 5){ //Vlogs
+                  Navigator.pushNamed(context, '/');
+                }else if(index == 7){ //Stories
+                  Navigator.pushNamed(context, '/');
+                }else if(index == 8){ //Memes
+                  Navigator.pushNamed(context, '/');
+                }else if(index == 9){ //Text
                   Navigator.pushNamed(context, '/TextCategory');
+                }else if(index == 10){ //Cartoon
+                  Navigator.pushNamed(context, '/');
+                }else if(index == 11){ //Updates
+                  Navigator.pushNamed(context, '/');
+                }else if(index == 12){ //Short Flims
+                  Navigator.pushNamed(context, '/');
+                }else if(index == 13){ //Documentry
+                  Navigator.pushNamed(context, '/');
                 }else if(index == 14){ //Video Page
                   Navigator.pushNamed(context, '/Inbox');
                 }
