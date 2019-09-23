@@ -13,8 +13,7 @@ class SpinnerAnimation extends StatefulWidget {
       _SpinnerAnimationState(body: this.body);
 }
 
-class _SpinnerAnimationState extends State<SpinnerAnimation>
-    with SingleTickerProviderStateMixin {
+class _SpinnerAnimationState extends State<SpinnerAnimation> with SingleTickerProviderStateMixin {
   final Widget body;
 
   _SpinnerAnimationState({this.body});

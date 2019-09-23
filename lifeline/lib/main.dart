@@ -4,24 +4,144 @@ import 'package:lifeline/bottom_nav_bar.dart';
 import 'package:lifeline/resources/dimen.dart';
 import 'package:lifeline/animations/spinner_animation.dart';
 import 'package:lifeline/resources/assets.dart';
+import 'package:lifeline/profile.dart';
 import 'package:lifeline/widgets/home/audio_spinner_icon.dart';
-import 'package:lifeline/resources/dimen.dart';
 import 'package:video_player/video_player.dart';
+import 'package:lifeline/classes/category.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  MyAppMain createState() => new MyAppMain();
+}
+
+class MyAppMain extends State<MyApp> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  //Video Header
+  int _selectedVideoHeader = 1;
+  void _onVideoHeader(int index) {
+    setState(() {
+      _selectedVideoHeader = index;
+      print(_selectedVideoHeader);
+    });
+  }
+  Widget _buildVideoHeader(int index, IconData icon, String tooltip) {
+    return new Padding(
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: IconButton(
+        icon: new Icon(icon),
+        tooltip: tooltip,
+        color: _selectedVideoHeader == index ? Colors.white : Colors.grey,
+        onPressed: () {
+          _onVideoHeader(index);
+          Fluttertoast.showToast(
+              msg: "You are watching '"+tooltip+"'",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIos: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.black,
+              fontSize: 16.0
+          );
+        },
+      ),
+    );
+  }
+
+  //Video Right Side
+  int _likedVideo = 0;
+  void _onVideoLike(int index) {
+    setState(() {
+      _likedVideo = index;
+      print(_likedVideo);
+    });
+  }
+  Widget _buildVideoRightSide(BuildContext context, String text, IconData icon, String tooltip) {
+
+    return new Padding(
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+              child: Icon(icon,
+              color: _likedVideo == 0 ? Colors.white : Colors.red,
+              size: 35,),
+              onTap: (){
+                if(text == "profile"){
+                  Navigator.of(context).pushNamed("/Profile");
+                }else if(text == "like"){
+                  //_onVideoLike(1);
+                  Fluttertoast.showToast(
+                      msg: "♥ Video Liked",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.red,
+                      fontSize: 16.0
+                  );
+                }else if(text == "comment"){
+                  showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context){
+                        return new Container(
+                          padding: new EdgeInsets.all(15.0),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Text('Comments Here', style: new TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              //new RaisedButton(onPressed: () => Navigator.pop(context), child: new Text('Close'),)
+                            ],
+                          ),
+                        );
+                      }
+                  );
+                }else if(text == "share"){
+                  showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context){
+                        return new Container(
+                          padding: new EdgeInsets.all(15.0),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Text('Share Here', style: new TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              //new RaisedButton(onPressed: () => Navigator.pop(context), child: new Text('Close'),)
+                            ],
+                          ),
+                        );
+                      }
+                  );
+                }
+                print(text);
+                //Navigator.pushNamed(context, '/TextCategory');
+              },
+          ),
+          Padding(
+            padding:
+            EdgeInsets.only(
+                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing
+            ),
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 10, color: Colors.white),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     return MaterialApp(
       initialRoute: '/',
-      routes: {
+      routes: <String, WidgetBuilder>{
         '/Menu': (context) => Menu(),
         '/Discover': (context) => Discover(),
         '/PlusVideo': (context) => PlusVideo(),
@@ -43,10 +163,7 @@ class MyApp extends StatelessWidget {
                     color: Colors.black,
                     child: Stack(
                       children: <Widget>[
-
                         AppVideoPlayer(),
-
-
                         Container(
                         child: Row(
                           children: <Widget>[
@@ -104,100 +221,11 @@ class MyApp extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
                                     //userProfile(),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                                      child: Column(
-                                        children: <Widget>[
-                                          GestureDetector(
-                                            child: Icon(AppIcons.profile,
-                                              color: Colors.white,
-                                              size: 35,),
-                                            onTap: (){
-                                              Navigator.pushNamed(context, '/Profile');
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
-                                            child: Text(
-                                              "Profile",
-                                              style: TextStyle(fontSize: 10, color: Colors.white),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                                      child: Column(
-                                        children: <Widget>[
-                                          GestureDetector(
-                                            child: Icon(AppIcons.heart,
-                                              color: Colors.white,
-                                              size: 35,),
-                                            onTap: (){
-                                              //Navigator.pushNamed(context, '/TextCategory');
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
-                                            child: Text(
-                                              "17.8k",
-                                              style: TextStyle(fontSize: 10, color: Colors.white),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                                      child: Column(
-                                        children: <Widget>[
-                                          GestureDetector(
-                                            child: Icon(AppIcons.chat_bubble,
-                                              color: Colors.white,
-                                              size: 35,),
-                                            onTap: (){
-                                              Navigator.pushNamed(context, '/TextCategory');
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
-                                            child: Text(
-                                              "130",
-                                              style: TextStyle(fontSize: 10, color: Colors.white),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                                      child: Column(
-                                        children: <Widget>[
-                                          GestureDetector(
-                                            child: Icon(AppIcons.reply,
-                                              color: Colors.white,
-                                              size: 35,),
-                                            onTap: (){
-                                              Navigator.pushNamed(context, '/TextCategory');
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing),
-                                            child: Text(
-                                              "Share",
-                                              style: TextStyle(fontSize: 10, color: Colors.white),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SpinnerAnimation(
-                                        body: audioSpinner())
+                                    _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
+                                    _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
+                                    _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
+                                    _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
+                                    SpinnerAnimation(body: audioSpinner())
                                   ],
                                 ),
                               ),
@@ -219,67 +247,11 @@ class MyApp extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-
-                  Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: IconButton(
-                      icon: new Icon(Icons.directions_run),
-                      tooltip: "Following",
-                      color: Colors.teal,
-                      onPressed: () {
-                        _scaffoldKey.currentState.showSnackBar(
-                            SnackBar(
-                              content: Text('Following Videos'),
-                              duration: Duration(seconds: 1),
-                            ));
-                      },
-                    ),
-                  ),
-                  Text("|",
-                      style: TextStyle(
-                          fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: IconButton(
-                      icon: new Icon(Icons.play_for_work),
-                      tooltip: "For You",
-                      color: Colors.grey,
-                      onPressed: () {
-                        _scaffoldKey.currentState.showSnackBar(
-                            SnackBar(
-                              content: Text('For You Videos'),
-                              duration: Duration(seconds: 1),
-                            ));
-                      },
-                    ),
-
-                    /*
-          child: Text(AppStrings.forYouString,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500)),
-                  */
-                  ),
-                  Text("|",
-                      style: TextStyle(
-                          fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: IconButton(
-                      icon: new Icon(Icons.location_on),
-                      tooltip: "Near By",
-                      color: Colors.grey,
-                      onPressed: () {
-                        _scaffoldKey.currentState.showSnackBar(
-                            SnackBar(
-                              content: Text('Near By Videos'),
-                              duration: Duration(seconds: 1),
-                            ));
-                      },
-                    ),
-                  ),
-
+                  _buildVideoHeader(1,Icons.directions_run,"Following"),
+                  Text("|",style: TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
+                  _buildVideoHeader(2,Icons.play_for_work,"For You"),
+                  Text("|",style: TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
+                  _buildVideoHeader(3,Icons.location_on,"Near By"),
                 ],
               ),
             ),
@@ -289,34 +261,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class Category {
-  const Category({this.id,this.title, this.icon, this.subtitle});
-  final int id;
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  @override
-  String toString() => title;
-}
-const List<Category> choices = const <Category>[
-  const Category(id:1, title: 'Home', icon: Icons.home, subtitle: "Mix Category",),
-  const Category(id:2, title: 'Mugic', icon: Icons.music_note, subtitle: "Tik Tok Category",),
-  const Category(id:3, title: 'Radio', icon: Icons.radio, subtitle: "Listen Live Radio",),
-  const Category(id:4, title: 'Program', icon: Icons.live_tv, subtitle: "Watch Programs",),
-  const Category(id:5, title: 'Picture', icon: Icons.image, subtitle: "Instagram Category",),
-  const Category(id:6, title: 'Vlogs', icon: Icons.camera_front, subtitle: "Watch Vlogs",),
-  const Category(id:7, title: 'Blogs', icon: Icons.format_quote, subtitle: "Read Blogs",),
-  const Category(id:8, title: 'Stories', icon: Icons.slow_motion_video, subtitle: "Friend's Stories",),
-  const Category(id:9, title: 'Memes', icon: Icons.accessibility, subtitle: "Funny Videos",),
-  const Category(id:10, title: 'Text', icon: Icons.format_shapes, subtitle: "Twitter Category",),
-  const Category(id:11, title: 'Cartoon', icon: Icons.child_care, subtitle: "Kid's Category",),
-  const Category(id:12, title: 'Updates', icon: Icons.voice_chat, subtitle: "Live",),
-  const Category(id:13, title: 'Short Flim', icon: Icons.movie_filter, subtitle: "Short Stories",),
-  const Category(id:14, title: 'Documentry', icon: Icons.local_movies, subtitle: "Information",),
-  const Category(id:15, title: 'Chit Chat', icon: Icons.chat, subtitle: "Chatting Category",),
-  const Category(id:15, title: 'Review', icon: Icons.rate_review, subtitle: "Review Category",),
-];
 
 class Menu extends StatelessWidget {
 
@@ -411,9 +355,6 @@ class Menu extends StatelessWidget {
                 );*/
               },
               onTap: () {
-
-
-                //yahan
                 if(index == 0){ //HOME
                   Navigator.pushNamed(context, '/');
                 }else if(index == 1){ //Mugic
@@ -542,24 +483,10 @@ class Me extends StatelessWidget {
     );
   }
 }
-class Profile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("me"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
+
+
+
+
 class TextCategory extends StatefulWidget {
   @override
   TextCategoryState createState() => new TextCategoryState();
@@ -636,6 +563,7 @@ class TextCategoryState extends State<TextCategory>{
     );
   }
 }
+
 class TextWrite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -748,4 +676,3 @@ class menu extends StatelessWidget {
   }
 }
 */
-
