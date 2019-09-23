@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lifeline/profile.dart';
 import 'package:lifeline/me.dart';
 import 'package:lifeline/discover.dart';
+import 'package:lifeline/inbox.dart';
 
 void main() => runApp(MyApp());
 
@@ -148,7 +149,7 @@ class MyAppMain extends State<MyApp> {
         '/Menu': (context) => Menu(),
         '/Discover': (context) => Discover(),
         '/PlusVideo': (context) => PlusVideo(),
-        '/Inbox': (context) => Inbox(),
+        '/Inbox': (context) => FriendsListPage(),
         '/Me': (context) => Me(),
         '/Profile': (context) => Profile(),
         '/TextCategory': (context) => TextCategory(),
@@ -433,24 +434,7 @@ class PlusVideo extends StatelessWidget {
     );
   }
 }
-class Inbox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("inbox"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
+
 /*
 class Me extends StatelessWidget {
   @override
@@ -579,8 +563,8 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://www.sample-videos.com/video123/mp4/240/big_buck_bunny_240p_5mb.mp4')
+    _controller = VideoPlayerController.asset(
+        'assets/videos/1.mp4')
       ..initialize().then((_) {
         _controller.play();
         setState(() {});
