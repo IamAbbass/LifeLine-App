@@ -15,6 +15,8 @@ import 'package:lifeline/me.dart';
 import 'package:lifeline/discover.dart';
 import 'package:lifeline/inbox.dart';
 import 'package:lifeline/picture.dart';
+import 'package:lifeline/radio.dart';
+import 'package:lifeline/programs.dart';
 
 void main() => runApp(MyApp());
 
@@ -155,7 +157,8 @@ class MyAppMain extends State<MyApp> {
         '/Profile': (context) => Profile(),
         '/TextCategory': (context) => TextCategory(),
         '/PictureCategory': (context) => PictureCategory(),
-
+        '/Radio': (context) => RadioCategory(),
+        '/Program': (context) => ProgramCategory(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
@@ -366,6 +369,10 @@ class Menu extends StatelessWidget {
                   Navigator.pushNamed(context, '/');
                 }else if(index == 1){ //Mugic
                   Navigator.pushNamed(context, '/');
+                }else if(index == 2){ //Radio
+                  Navigator.pushNamed(context, '/Radio');
+                }else if(index == 3){ //Programs
+                  Navigator.pushNamed(context, '/Program');
                 }else if(index == 4){ //Picture
                   Navigator.pushNamed(context, '/PictureCategory');
                 }else if(index == 5){ //Vlogs
