@@ -13,7 +13,7 @@ class Profile extends StatelessWidget {
 }
 
 class UserProfilePage extends StatelessWidget {
-  final String _fullName = "Nick Frost";
+  final String _fullName = "Ghulam Abbass";
   final String _status = "Software Developer";
   final String _bio =
       "\"Hi, I am a Freelance developer working for hourly basis. If you wants to contact me to build your product leave a message.\"";
