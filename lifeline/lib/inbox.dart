@@ -1,4 +1,119 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:meta/meta.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+
+class Friend {
+  Friend({
+    @required this.avatar,
+    @required this.name,
+    @required this.email,
+    @required this.location,
+  });
+
+  final String avatar;
+  final String name;
+  final String email;
+  final String location;
+
+  static List<Friend> allFromResponse(String response) {
+    var decodedJson = json.decode(response).cast<String, dynamic>();
+
+    return decodedJson['results']
+        .cast<Map<String, dynamic>>()
+        .map((obj) => Friend.fromMap(obj))
+        .toList()
+        .cast<Friend>();
+  }
+
+  static Friend fromMap(Map map) {
+    var name = map['name'];
+
+    return new Friend(
+      avatar: map['picture']['large'],
+      name: '${_capitalize(name['first'])} ${_capitalize(name['last'])}',
+      email: map['email'],
+      location: _capitalize(map['location']['state']),
+    );
+  }
+
+  static String _capitalize(String input) {
+    return input.substring(0, 1).toUpperCase() + input.substring(1);
+  }
+}
+class FriendsListPage extends StatefulWidget {
+  @override
+  _FriendsListPageState createState() => new _FriendsListPageState();
+}
+class _FriendsListPageState extends State<FriendsListPage> {
+  List<Friend> _friends = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFriends();
+  }
+
+  Future<void> _loadFriends() async {
+    http.Response response =
+    await http.get('https://randomuser.me/api/?results=25');
+
+    setState(() {
+      _friends = Friend.allFromResponse(response.body);
+    });
+  }
+
+  Widget _buildFriendListTile(BuildContext context, int index) {
+    var friend = _friends[index];
+
+    return new ListTile(
+      onTap: () => _navigateToChat(friend, index),
+      leading: new Hero(
+        tag: index,
+        child: new CircleAvatar(
+          backgroundImage: new NetworkImage(friend.avatar),
+        ),
+      ),
+      title: new Text(friend.name),
+      subtitle: new Text(friend.email),
+    );
+  }
+
+
+  void _navigateToChat(Friend friend, Object avatarTag) {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (c) {
+          //return new FriendDetailsPage(friend, avatarTag: avatarTag);
+          return new Inbox();
+        },
+      ),
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content;
+
+    if (_friends.isEmpty) {
+      content = new Center(
+        child: new CircularProgressIndicator(),
+      );
+    } else {
+      content = new ListView.builder(
+        itemCount: _friends.length,
+        itemBuilder: _buildFriendListTile,
+      );
+    }
+
+    return new Scaffold(
+      appBar: new AppBar(title: new Text('Friends')),
+      body: content,
+    );
+  }
+}
 
 class Inbox extends StatelessWidget {
   @override
@@ -6,7 +121,6 @@ class Inbox extends StatelessWidget {
     return new MaterialApp(title: "Chat App", home: new HomePage());
   }
 }
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -17,12 +131,10 @@ class HomePage extends StatelessWidget {
         body: new ChatScreen());
   }
 }
-
 class ChatScreen extends StatefulWidget {
   @override
   State createState() => new ChatScreenState();
 }
-
 class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = new TextEditingController();
   final List<ChatMessage> _messages = <ChatMessage>[];
@@ -90,9 +202,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
-const String _name = "Pawan";
-
+const String _name = "Ghualm Abbass";
 class ChatMessage extends StatelessWidget {
   final String text;
   ChatMessage({this.text});
@@ -125,3 +235,4 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
+

@@ -149,7 +149,7 @@ class MyAppMain extends State<MyApp> {
         '/Menu': (context) => Menu(),
         '/Discover': (context) => Discover(),
         '/PlusVideo': (context) => PlusVideo(),
-        '/Inbox': (context) => Inbox(),
+        '/Inbox': (context) => FriendsListPage(),
         '/Me': (context) => Me(),
         '/Profile': (context) => Profile(),
         '/TextCategory': (context) => TextCategory(),
