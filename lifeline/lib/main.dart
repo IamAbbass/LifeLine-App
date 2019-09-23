@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:lifeline/bottom_nav_bar.dart';
 import 'package:lifeline/resources/dimen.dart';
 import 'package:lifeline/animations/spinner_animation.dart';
 import 'package:lifeline/resources/assets.dart';
-import 'package:lifeline/profile.dart';
 import 'package:lifeline/widgets/home/audio_spinner_icon.dart';
 import 'package:video_player/video_player.dart';
 import 'package:lifeline/classes/category.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:lifeline/profile.dart';
+import 'package:lifeline/me.dart';
+import 'package:lifeline/discover.dart';
 
 void main() => runApp(MyApp());
 
@@ -411,24 +414,7 @@ class CategoryPage extends StatelessWidget {
     );
   }
 }
-class Discover extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Discover"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
+
 class PlusVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -465,6 +451,7 @@ class Inbox extends StatelessWidget {
     );
   }
 }
+/*
 class Me extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -483,6 +470,7 @@ class Me extends StatelessWidget {
     );
   }
 }
+*/
 
 
 
