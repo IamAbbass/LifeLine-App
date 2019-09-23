@@ -365,7 +365,13 @@ class Menu extends StatelessWidget {
                   Navigator.pushNamed(context, '/');
                 }else if(index == 9){ //Video Page
                   Navigator.pushNamed(context, '/TextCategory');
-                }else{
+                }else if(index == 14){ //Video Page
+                  Navigator.pushNamed(context, '/Inbox');
+                }
+
+
+
+                else{
                   //ToDo
 
                   Navigator.push(
