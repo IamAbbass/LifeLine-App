@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lifeline/profile.dart';
 import 'package:lifeline/me.dart';
 import 'package:lifeline/discover.dart';
+import 'package:lifeline/inbox.dart';
 
 void main() => runApp(MyApp());
 
@@ -433,24 +434,7 @@ class PlusVideo extends StatelessWidget {
     );
   }
 }
-class Inbox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("inbox"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
+
 /*
 class Me extends StatelessWidget {
   @override
