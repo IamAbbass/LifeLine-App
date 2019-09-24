@@ -161,7 +161,7 @@ class MyAppMain extends State<MyApp> {
         '/Program': (context) => ProgramCategory(),
       },
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      //theme: ThemeData.dark(),
       home: Scaffold(
         key: _scaffoldKey,
         body: Stack(
@@ -274,28 +274,25 @@ class MyAppMain extends State<MyApp> {
 
 class Menu extends StatelessWidget {
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*
       appBar: AppBar(
-        title: Text("All Categories"),
+        title: Text("Life Line Categories"),
         backgroundColor: Colors.teal,
         //leading: Icon(Icons.person),
-    ),
-
-       */
+      ),
       body: new GridView.builder(
           itemCount: choices.length,
           gridDelegate:
           new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
           itemBuilder: (BuildContext context, int index) {
             return new GestureDetector(
+    
               child: new Card(
-                elevation: 2.0,
+                //shape: ContinuousRectangleBorder(side: BorderSide(color: Colors.teal)),
+                //elevation: 3.0,
                 child: new Container(
-                  color: Colors.black54,
                   alignment: Alignment.center,
                   child: new Column(
                     children: <Widget>[
@@ -307,7 +304,7 @@ class Menu extends StatelessWidget {
                       ),
                       new Text(
                           choices[index].title,
-                          style: TextStyle(fontSize: 18, color: Colors.white70),
+                          style: TextStyle(fontSize: 18, color: Colors.teal),
 
                       ),
                       new Text(" "),
@@ -341,12 +338,27 @@ class Menu extends StatelessWidget {
                         new FlatButton(
                             onPressed: () {
                               Navigator.of(context).pop();
-                              Navigator.push(
+                              /*Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CategoryPage(category: choices[index]),
                                 ),
+                              );*/
+
+                              final snackBar = SnackBar(
+                                content: Text('Yay! You liked '+choices[index].title+" category !"),
+                                action: SnackBarAction(
+                                  label: 'Undo',
+                                  onPressed: () {
+                                    // Some code to undo the change.
+                                  },
+                                ),
                               );
+
+                              // Find the Scaffold in the widget tree and use
+                              // it to show a SnackBar.
+                              Scaffold.of(context).showSnackBar(snackBar);
+
                             },
                             child: new Text("♥"))
                       ],
@@ -438,7 +450,8 @@ class CategoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(category.title),
-        leading: Icon(category.icon),
+        backgroundColor: Colors.teal,
+        //leading: Icon(category.icon),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -525,7 +538,7 @@ class TextCategoryState extends State<TextCategory>{
     return new Scaffold(
         appBar: new AppBar(
             title: new Text("Text Category"),
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.teal,
             actions: <Widget>[
                 // action button
                 IconButton(
@@ -544,11 +557,11 @@ class TextCategoryState extends State<TextCategory>{
               child: new Center(
                 child: new Text(
                     'Hello, world!',
-                    style: TextStyle(fontSize: 36)
+                    style: TextStyle(fontSize: 36, color: Colors.white)
                 ),
               ),
               //color: position % 2 == 0 ? Colors.black : Colors.white,
-              color: Colors.black54,
+              color: Colors.teal,
             );
           },
         ),

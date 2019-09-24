@@ -16,6 +16,7 @@ class RadioCategoryPage extends State<RadioCategory> {
           children: <Widget>[HomeScreeTopPart(), HomeScreenBottomPart()],
         ),
       ),
+      /*
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         type: BottomNavigationBarType.fixed,
@@ -39,7 +40,9 @@ class RadioCategoryPage extends State<RadioCategory> {
               icon: Icon(Icons.person_outline), title: Text("Profile"))
         ],
       ),
+      */
     );
+
   }
 }
 
@@ -86,14 +89,14 @@ class HomeScreeTopPart extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "WATCH BEFORE EVERONE",
+                            "LISTEN BEFORE IT ENDS",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15.0,
                                 fontFamily: "SF-Pro-Display-Bold"),
                           ),
                           Text(
-                            "The Punisher: Season 2",
+                            "RADIO",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 45.0,
@@ -135,7 +138,7 @@ class HomeScreeTopPart extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           Text(
-                            "Watch Now",
+                            "Listen Now",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15.0,
@@ -206,13 +209,14 @@ class HomeScreenBottomPart extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 4.0, left: 8.0, right: 8.0),
                 child: Text(titles[i],
+
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 16.0, fontFamily: "SF-Pro-Display-Bold")),
+                      color: Colors.black, fontSize: 16.0, fontFamily: "SF-Pro-Display-Bold")),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 3.0),
-                child: Text(i == 0 ? "Season 2" : ""),
+                child: Text(i == 0 ? "Season 2" : "",style: TextStyle(color: Colors.black),),
               )
             ],
           ),
@@ -236,7 +240,7 @@ class HomeScreenBottomPart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Watch now",
+                  "Listen now",
                   style: TextStyle(
                       fontSize: 22.0, fontFamily: "SF-Pro-Display-Bold"),
                 ),

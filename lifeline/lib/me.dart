@@ -13,10 +13,9 @@ class Me extends StatelessWidget {
 }
 
 class UserProfilePage extends StatelessWidget {
-  final String _fullName = "Waleed";
-  final String _status = "Software Developer";
-  final String _bio =
-      "\"Hi, I am a Freelance developer working for hourly basis. If you wants to contact me to build your product leave a message.\"";
+  final String _fullName = "Ghulam Abbass";
+  final String _status = "@abbassified";
+  final String _bio = "No videos to show!";
   final String _followers = "173";
   final String _posts = "24";
   final String _scores = "450";
@@ -242,11 +241,11 @@ class UserProfilePage extends StatelessWidget {
                   _buildStatus(context),
                   _buildStatContainer(),
                   _buildBio(context),
-                  _buildSeparator(screenSize),
-                  SizedBox(height: 10.0),
-                  _buildGetInTouch(context),
-                  SizedBox(height: 8.0),
-                  _buildButtons(),
+                  //_buildSeparator(screenSize),
+                  //SizedBox(height: 10.0),
+                  //_buildGetInTouch(context),
+                  //SizedBox(height: 8.0),
+                  //_buildButtons(),
                 ],
               ),
             ),

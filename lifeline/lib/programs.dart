@@ -16,6 +16,7 @@ class ProgramCategoryPage extends State<ProgramCategory> {
           children: <Widget>[HomeScreeTopPart(), HomeScreenBottomPart()],
         ),
       ),
+     /*
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         type: BottomNavigationBarType.fixed,
@@ -39,6 +40,7 @@ class ProgramCategoryPage extends State<ProgramCategory> {
               icon: Icon(Icons.person_outline), title: Text("Profile"))
         ],
       ),
+      */
     );
   }
 }
@@ -208,11 +210,11 @@ class HomeScreenBottomPart extends StatelessWidget {
                 child: Text(titles[i],
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 16.0, fontFamily: "SF-Pro-Display-Bold")),
+                        color: Colors.black, fontSize: 16.0, fontFamily: "SF-Pro-Display-Bold")),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 3.0),
-                child: Text(i == 0 ? "Season 2" : ""),
+                child: Text(i == 0 ? "Season 2" : "",style: TextStyle(color: Colors.black),),
               )
             ],
           ),

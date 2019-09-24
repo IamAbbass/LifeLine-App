@@ -13,10 +13,9 @@ class Profile extends StatelessWidget {
 }
 
 class UserProfilePage extends StatelessWidget {
-  final String _fullName = "Ghulam Abbass";
-  final String _status = "Software Developer";
-  final String _bio =
-      "\"Hi, I am a Freelance developer working for hourly basis. If you wants to contact me to build your product leave a message.\"";
+  final String _fullName = "Waqas";
+  final String _status = "@waqas74";
+  final String _bio = "Founder of Live Line App";
   final String _followers = "173";
   final String _posts = "24";
   final String _scores = "450";

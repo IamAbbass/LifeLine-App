@@ -52,6 +52,11 @@ flutter:
     - assets/images/cover.jpg
     - assets/images/ga.jpg
     - assets/videos/1.mp4
+    - assets/images/avengers.jpg
+    - assets/images/banner.png
+    - assets/images/blackpanther.jpg
+    - assets/images/punisher.jpg
+    - assets/images/runaways.jpg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
