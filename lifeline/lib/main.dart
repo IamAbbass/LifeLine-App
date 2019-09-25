@@ -18,6 +18,8 @@ import 'package:lifeline/picture.dart';
 import 'package:lifeline/radio.dart';
 import 'package:lifeline/programs.dart';
 
+//import 'package:flare_splash_screen/flare_splash_screen.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -175,74 +177,74 @@ class MyAppMain extends State<MyApp> {
                       children: <Widget>[
                         AppVideoPlayer(),
                         Container(
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(flex: 5, child: Container(
-                              padding: EdgeInsets.only(left: 16, bottom: 60),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 7, bottom: 7),
-                                    child: Text(
-                                      "@mcofie",
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 4, bottom: 7),
-                                    child: Text(
-                                        "Lorem ipsum dolor sit amet, consectetur "
-                                            "adipiscing elit, "
-                                            "sed do eiusmod tempor.",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w300)),
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.music_note,
-                                        size: 19,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        "Lorem ipsum dolor sit amet ...",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w300),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.only(bottom: 60, right: 0),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(flex: 5, child: Container(
+                                padding: EdgeInsets.only(left: 16, bottom: 60),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    //userProfile(),
-                                    _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
-                                    _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
-                                    _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
-                                    _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
-                                    SpinnerAnimation(body: audioSpinner())
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 7, bottom: 7),
+                                      child: Text(
+                                        "@mcofie",
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4, bottom: 7),
+                                      child: Text(
+                                          "Lorem ipsum dolor sit amet, consectetur "
+                                              "adipiscing elit, "
+                                              "sed do eiusmod tempor.",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w300)),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.music_note,
+                                          size: 19,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "Lorem ipsum dolor sit amet ...",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w300),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
+                              )),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: EdgeInsets.only(bottom: 60, right: 0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      //userProfile(),
+                                      _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
+                                      _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
+                                      _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
+                                      _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
+                                      SpinnerAnimation(body: audioSpinner())
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   );
@@ -267,7 +269,8 @@ class MyAppMain extends State<MyApp> {
             ),
           ],
         ),
-      ),
+      )
+      //,
     );
   }
 }
