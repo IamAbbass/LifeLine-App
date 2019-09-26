@@ -107,7 +107,6 @@ class _FriendsListPageState extends State<FriendsListPage> {
         itemBuilder: _buildFriendListTile,
       );
     }
-
     return new Scaffold(
       appBar: new AppBar(title: new Text('Inbox')),
       body: content,
@@ -126,7 +125,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Frenzy Chat"),
+          title: new Text("Chat"),
         ),
         body: new ChatScreen());
   }

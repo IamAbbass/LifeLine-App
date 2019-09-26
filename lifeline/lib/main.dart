@@ -27,6 +27,7 @@ class MyApp extends StatefulWidget {
   MyAppMain createState() => new MyAppMain();
 }
 
+//Videos
 class MyAppMain extends State<MyApp> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -39,13 +40,16 @@ class MyAppMain extends State<MyApp> {
       print(_selectedVideoHeader);
     });
   }
+
   Widget _buildVideoHeader(int index, IconData icon, String tooltip) {
     return new Padding(
       padding: EdgeInsets.only(left: 10, right: 10),
       child: IconButton(
-        icon: new Icon(icon),
+        icon: new Icon(icon,
+          size: _selectedVideoHeader == index ? 36 : 24,
+        ),
         tooltip: tooltip,
-        color: _selectedVideoHeader == index ? Colors.white : Colors.grey,
+        color: _selectedVideoHeader == index ? Colors.blue : Colors.white,
         onPressed: () {
           _onVideoHeader(index);
           Fluttertoast.showToast(
@@ -53,8 +57,8 @@ class MyAppMain extends State<MyApp> {
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
               timeInSecForIos: 1,
-              backgroundColor: Colors.white,
-              textColor: Colors.black,
+              backgroundColor: Colors.blue,
+              textColor: Colors.white,
               fontSize: 16.0
           );
         },
@@ -63,13 +67,20 @@ class MyAppMain extends State<MyApp> {
   }
 
   //Video Right Side
-  int _likedVideo = 0;
-  void _onVideoLike(int index) {
+  int _videoPause = 0;
+  void _onVideoPause() {
     setState(() {
-      _likedVideo = index;
+      print(_videoPause);
+    });
+  }
+
+  int _likedVideo = 0;
+  void _onVideoLike() {
+    setState(() {
       print(_likedVideo);
     });
   }
+
   Widget _buildVideoRightSide(BuildContext context, String text, IconData icon, String tooltip) {
 
     return new Padding(
@@ -86,12 +97,12 @@ class MyAppMain extends State<MyApp> {
                 }else if(text == "like"){
                   //_onVideoLike(1);
                   Fluttertoast.showToast(
-                      msg: "♥ Video Liked",
+                      msg: "You liked this video",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIos: 1,
-                      backgroundColor: Colors.white,
-                      textColor: Colors.red,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
                       fontSize: 16.0
                   );
                 }else if(text == "comment"){
@@ -177,74 +188,74 @@ class MyAppMain extends State<MyApp> {
                       children: <Widget>[
                         AppVideoPlayer(),
                         Container(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(flex: 5, child: Container(
-                                padding: EdgeInsets.only(left: 16, bottom: 60),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 7, bottom: 7),
-                                      child: Text(
-                                        "@mcofie",
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 4, bottom: 7),
-                                      child: Text(
-                                          "Lorem ipsum dolor sit amet, consectetur "
-                                              "adipiscing elit, "
-                                              "sed do eiusmod tempor.",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w300)),
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.music_note,
-                                          size: 19,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          "Lorem ipsum dolor sit amet ...",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w300),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  padding: EdgeInsets.only(bottom: 60, right: 0),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(flex: 5, child: Container(
+                                  padding: EdgeInsets.only(left: 16, bottom: 60),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      //userProfile(),
-                                      _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
-                                      _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
-                                      _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
-                                      _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
-                                      SpinnerAnimation(body: audioSpinner())
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 7, bottom: 7),
+                                        child: Text(
+                                          "@mcofie",
+                                          style: TextStyle(
+                                              fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 4, bottom: 7),
+                                        child: Text(
+                                            "Lorem ipsum dolor sit amet, consectetur "
+                                                "adipiscing elit, "
+                                                "sed do eiusmod tempor.",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300)),
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.music_note,
+                                            size: 19,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            "Lorem ipsum dolor sit amet ...",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300),
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ),
-                              )
-                            ],
+                                )),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    padding: EdgeInsets.only(bottom: 60, right: 0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        //userProfile(),
+                                        _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
+                                        _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
+                                        _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
+                                        _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
+                                        SpinnerAnimation(body: audioSpinner())
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        )
                       ],
                     ),
                   );
@@ -259,10 +270,10 @@ class MyAppMain extends State<MyApp> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  _buildVideoHeader(1,Icons.directions_run,"Following"),
-                  Text("|",style: TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
-                  _buildVideoHeader(2,Icons.play_for_work,"For You"),
-                  Text("|",style: TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
+                  _buildVideoHeader(1,Icons.favorite_border,"Following"),
+                  Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
+                  _buildVideoHeader(2,Icons.notifications,"For You"),
+                  Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
                   _buildVideoHeader(3,Icons.location_on,"Near By"),
                 ],
               ),
@@ -281,8 +292,8 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Life Line Categories"),
-        backgroundColor: Colors.teal,
+        title: Text("Categories"),
+        backgroundColor: Colors.blue,
         //leading: Icon(Icons.person),
       ),
       body: new GridView.builder(
@@ -303,17 +314,17 @@ class Menu extends StatelessWidget {
                       new Icon(
                         choices[index].icon,
                         size: 36,
-                        color: Colors.teal,
+                        color: Colors.blue,
                       ),
                       new Text(
                           choices[index].title,
-                          style: TextStyle(fontSize: 18, color: Colors.teal),
+                          style: TextStyle(fontSize: 18, color: Colors.blue),
 
                       ),
                       new Text(" "),
                       new Text(
                         choices[index].subtitle,
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Colors.blueGrey),
 
                       ),
                       //new Text(choices[index].subtitle),
@@ -453,7 +464,7 @@ class CategoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(category.title),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.blue,
         //leading: Icon(category.icon),
       ),
       body: Padding(
@@ -541,7 +552,7 @@ class TextCategoryState extends State<TextCategory>{
     return new Scaffold(
         appBar: new AppBar(
             title: new Text("Text Category"),
-            backgroundColor: Colors.teal,
+            backgroundColor: Colors.blue,
             actions: <Widget>[
                 // action button
                 IconButton(
@@ -564,7 +575,7 @@ class TextCategoryState extends State<TextCategory>{
                 ),
               ),
               //color: position % 2 == 0 ? Colors.black : Colors.white,
-              color: Colors.teal,
+              color: Colors.blue,
             );
           },
         ),
@@ -607,7 +618,6 @@ class AppVideoPlayer extends StatefulWidget {
 
 class _AppVideoPlayerState extends State<AppVideoPlayer> {
   VideoPlayerController _controller;
-
   @override
   void initState() {
     super.initState();
@@ -619,15 +629,51 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
       });
   }
 
+  void _onVideoTap() {
+    setState(() {
+      if(_controller.value.isPlaying){
+        _controller.pause();
+      }else{
+        _controller.play();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: _controller.value.initialized
           ? AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
-        child: VideoPlayer(_controller),
-      )
-          : Container(
+        child: GestureDetector(
+          onTap: (){
+            _onVideoTap();
+          },
+          onLongPress: (){
+            Fluttertoast.showToast(
+                msg: "You tapped long on this video",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.blue,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          },
+          onDoubleTap: (){
+            Fluttertoast.showToast(
+                msg: "You liked this video",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.blue,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          },
+          child: VideoPlayer(_controller),
+        ),
+      ) : Container(
         color: Colors.black,
       ),
     );

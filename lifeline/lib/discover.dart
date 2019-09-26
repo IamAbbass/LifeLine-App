@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-
-
 import 'dart:io';
-import 'package:flutter/material.dart';
 
 class Discover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      theme: ThemeData.dark(),
       home: new MainPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -136,6 +133,7 @@ class _MainPageState extends State<MainPage>
       appBar: new AppBar(
         leading: _isSearching ? const BackButton() : null,
         title: _isSearching ? _buildSearchField() : _buildTitle(context),
+        backgroundColor: Colors.blue,
         actions: _buildActions(),
       ),
       body: new Center(
