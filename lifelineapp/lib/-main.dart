@@ -65,8 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
             final freshSnapshot = await transaction.get(record.reference);
             final fresh = Record.fromSnapshot(freshSnapshot);
 
-            await transaction
-                .update(record.reference, {'votes': fresh.votes + 1});
+            await transaction.update(record.reference, {'votes': fresh.votes + 1});
           }),
         ),
       ),

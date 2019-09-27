@@ -125,7 +125,7 @@ class MyAppMain extends State<MyApp> {
       ),
     );
   }
-  Widget _buildVideoRightSide(BuildContext context, String text, IconData icon, String tooltip) {
+  Widget _buildVideoRightSide(BuildContext context, String text, IconData icon, String display) {
 
     return new Padding(
       padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -140,6 +140,12 @@ class MyAppMain extends State<MyApp> {
                   Navigator.of(context).pushNamed("/Profile");
                 }else if(text == "like"){
                   //_onVideoLike(1);
+
+                  final freshSnapshot = await transaction.get(record.reference);
+                  final fresh = Record.fromSnapshot(freshSnapshot);
+
+                  await transaction.update(record.reference, {'votes': fresh.votes + 1});
+
                   Fluttertoast.showToast(
                       msg: "You liked this video",
                       toastLength: Toast.LENGTH_SHORT,
@@ -182,7 +188,6 @@ class MyAppMain extends State<MyApp> {
                       }
                   );
                 }
-                print(text);
                 //Navigator.pushNamed(context, '/TextCategory');
               },
           ),
@@ -192,7 +197,7 @@ class MyAppMain extends State<MyApp> {
                 top: Dimen.defaultTextSpacing, bottom: Dimen.defaultTextSpacing
             ),
             child: Text(
-              text,
+              display,
               style: TextStyle(fontSize: 10, color: Colors.white),
             ),
           )
@@ -200,7 +205,6 @@ class MyAppMain extends State<MyApp> {
       ),
     );
   }
-
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('baby').snapshots(),
@@ -280,17 +284,14 @@ class MyAppMain extends State<MyApp> {
                         Padding(
                           padding: EdgeInsets.only(top: 7, bottom: 7),
                           child: Text(
-                            "@mcofie",
+                            data['username'],
                             style: TextStyle(
                                 fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 4, bottom: 7),
-                          child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur "
-                                  "adipiscing elit, "
-                                  "sed do eiusmod tempor.",
+                          child: Text(data['description'],
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -304,8 +305,8 @@ class MyAppMain extends State<MyApp> {
                               color: Colors.white,
                             ),
                             Text(
-                              "Lorem ipsum dolor sit amet ...",
-                              style: TextStyle(
+                                data['music'],
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w300),
@@ -325,10 +326,10 @@ class MyAppMain extends State<MyApp> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           //userProfile(),
-                          _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
-                          _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
-                          _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
-                          _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
+                          _buildVideoRightSide(context,"profile",AppIcons.profile,data['name']),
+                          _buildVideoRightSide(context,"like",AppIcons.heart,data['like_count']),
+                          _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,data['comment_count']),
+                          _buildVideoRightSide(context,"share",AppIcons.reply,data['share_count']),
                           SpinnerAnimation(body: audioSpinner())
                         ],
                       ),
@@ -605,7 +606,6 @@ class CategoryPage extends StatelessWidget {
     );
   }
 }
-
 class PlusVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -624,31 +624,6 @@ class PlusVideo extends StatelessWidget {
     );
   }
 }
-
-/*
-class Me extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("me"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
-*/
-
-
-
-
 class TextCategory extends StatefulWidget {
   @override
   TextCategoryState createState() => new TextCategoryState();
@@ -725,7 +700,6 @@ class TextCategoryState extends State<TextCategory>{
     );
   }
 }
-
 class TextWrite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -740,24 +714,26 @@ class TextWrite extends StatelessWidget {
     );
   }
 }
-
-
 class AppVideoPlayer extends StatefulWidget {
+
+  final String video_path;
+
+  const AppVideoPlayer({Key key, this.video_path}): super(key: key);
+
   @override
   _AppVideoPlayerState createState() => _AppVideoPlayerState();
 }
-
 class _AppVideoPlayerState extends State<AppVideoPlayer> {
+
   VideoPlayerController _controller;
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset(
-        'assets/videos/1.mp4')
-      ..initialize().then((_) {
-        _controller.play();
-        setState(() {});
-      });
+    _controller = VideoPlayerController.asset('assets/videos/1.mp4')
+    ..initialize().then((_) {
+      _controller.play();
+      setState(() {});
+    });
   }
 
   void _onVideoTap() {
@@ -772,6 +748,7 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.video_path);
     return Center(
       child: _controller.value.initialized
           ? AspectRatio(
@@ -853,15 +830,13 @@ Widget userProfile() {
   );
 }
 
-
-
 /*
-class menu extends StatelessWidget {
+class Me extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Menu"),
+        title: Text("me"),
       ),
       body: Center(
         child: RaisedButton(
