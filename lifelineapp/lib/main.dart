@@ -141,11 +141,6 @@ class MyAppMain extends State<MyApp> {
                 }else if(text == "like"){
                   //_onVideoLike(1);
 
-                  final freshSnapshot = await transaction.get(record.reference);
-                  final fresh = Record.fromSnapshot(freshSnapshot);
-
-                  await transaction.update(record.reference, {'votes': fresh.votes + 1});
-
                   Fluttertoast.showToast(
                       msg: "You liked this video",
                       toastLength: Toast.LENGTH_SHORT,
