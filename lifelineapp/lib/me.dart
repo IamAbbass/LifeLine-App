@@ -1,19 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth.dart';
 
 
-class Me extends StatelessWidget {
+class Me extends StatefulWidget {
+  @override
+  UserProfilePage createState() => UserProfilePage();
+}
+
+
+
+
+class UserProfilePage extends State<Me>{
+
+  Map<String, dynamic> _profile;
+  bool _loading = false;
+
+
+  bool isLoggedIn;
+  @override
+  void initState() {
+    isLoggedIn = false;
+    FirebaseAuth.instance.currentUser().then((user) => user != null
+        ? setState(() {
+      isLoggedIn = true;
+    })
+        : null);
+    super.initState();
+    // new Future.delayed(const Duration(seconds: 2));
+
+    FirebaseAuth.instance.onAuthStateChanged.listen((user) {
+      setState(() => isLoggedIn = user != null);
+    });
+  }
+
+
+
+  /*
+  @override
+  initState(){
+    super.initState();
+    authService.profile.listen((state) => setState(() => _profile = state));
+    authService.loading.listen((state) => setState(() => _loading = state));
+  }
+  */
+  
+
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "User Profile",
-      debugShowCheckedModeBanner: false,
-      home: UserProfilePage(),
-    );
+    return AuthCondition();
   }
 }
 
-class UserProfilePage extends StatelessWidget {
-  final String _fullName = "Ghulam Abbass";
+
+class AuthCondition extends StatefulWidget {
+  @override
+  AuthConditionState createState() => AuthConditionState();
+}
+
+class AuthConditionState extends State<AuthCondition>{
+
+
   final String _status = "@abbassified";
   final String _bio = "No videos to show!";
   final String _followers = "173";
@@ -25,21 +73,20 @@ class UserProfilePage extends StatelessWidget {
       height: screenSize.height / 2.6,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/cover.jpg'),
-          fit: BoxFit.cover,
+          image: AssetImage('assets/images/pulse-black.png'),
+          fit: BoxFit.contain,
         ),
       ),
     );
   }
-
-  Widget _buildProfileImage() {
+  Widget _buildProfileImage(String photoUrl) {
     return Center(
       child: Container(
         width: 140.0,
         height: 140.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/ga.jpg'),
+            image: NetworkImage(photoUrl),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -51,8 +98,7 @@ class UserProfilePage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildFullName() {
+  Widget _buildFullName(String name) {
     TextStyle _nameTextStyle = TextStyle(
       fontFamily: 'Roboto',
       color: Colors.black,
@@ -61,11 +107,10 @@ class UserProfilePage extends StatelessWidget {
     );
 
     return Text(
-      _fullName,
+      name,
       style: _nameTextStyle,
     );
   }
-
   Widget _buildStatus(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
@@ -84,7 +129,6 @@ class UserProfilePage extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildStatItem(String label, String count) {
     TextStyle _statLabelTextStyle = TextStyle(
       fontFamily: 'Roboto',
@@ -113,7 +157,6 @@ class UserProfilePage extends StatelessWidget {
       ],
     );
   }
-
   Widget _buildStatContainer() {
     return Container(
       height: 60.0,
@@ -131,7 +174,6 @@ class UserProfilePage extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildBio(BuildContext context) {
     TextStyle bioTextStyle = TextStyle(
       fontFamily: 'Spectral',
@@ -151,7 +193,6 @@ class UserProfilePage extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildSeparator(Size screenSize) {
     return Container(
       width: screenSize.width / 1.6,
@@ -160,18 +201,6 @@ class UserProfilePage extends StatelessWidget {
       margin: EdgeInsets.only(top: 4.0),
     );
   }
-
-  Widget _buildGetInTouch(BuildContext context) {
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.only(top: 8.0),
-      child: Text(
-        "Get in Touch with ${_fullName.split(" ")[0]},",
-        style: TextStyle(fontFamily: 'Roboto', fontSize: 16.0),
-      ),
-    );
-  }
-
   Widget _buildButtons() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -224,34 +253,89 @@ class UserProfilePage extends StatelessWidget {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          _buildCoverImage(screenSize),
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
+
+    return StreamBuilder(
+        stream: authService.user,
+        builder: (context,snapshot){
+          if(snapshot.hasData){
+            return Scaffold(
+              body: Stack(
                 children: <Widget>[
-                  SizedBox(height: screenSize.height / 6.4),
-                  _buildProfileImage(),
-                  _buildFullName(),
-                  _buildStatus(context),
-                  _buildStatContainer(),
-                  _buildBio(context),
-                  //_buildSeparator(screenSize),
-                  //SizedBox(height: 10.0),
-                  //_buildGetInTouch(context),
-                  //SizedBox(height: 8.0),
-                  //_buildButtons(),
+                  _buildCoverImage(screenSize),
+                  SafeArea(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: screenSize.height / 6.4),
+                          _buildProfileImage(snapshot.data.photoUrl),
+                          _buildFullName(snapshot.data.displayName),
+                          _buildStatus(context),
+                          _buildStatContainer(),
+                          _buildBio(context),
+                          _buildSeparator(screenSize),
+                          SizedBox(height: 10.0),
+                          SizedBox(height: 8.0),
+                          //_buildButtons(),
+                          RaisedButton(
+                            shape: ContinuousRectangleBorder(),
+                            child: Text("Log Out",
+                                style: TextStyle(color: Colors.white)),
+                            color: Colors.red,
+                            onPressed: () => authService.signOut(),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ),
-        ],
-      ),
+            );
+
+
+
+          }else{
+            return Scaffold(
+              body: Stack(
+                children: <Widget>[
+                  _buildCoverImage(screenSize),
+                  SafeArea(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: screenSize.height / 6.4),
+                          _buildProfileImage("https://design.printexpress.co.uk/wp-content/uploads/2016/02/01-avatars.jpg"),
+                          _buildFullName("Please login to Life Line"),
+                          //_buildStatus(context),
+                          //_buildStatContainer(),
+                          //_buildBio(context),
+                          //_buildSeparator(screenSize),
+                          SizedBox(height: 10.0),
+                          SizedBox(height: 8.0),
+                          //_buildButtons(),
+                          RaisedButton(
+                            child: Text("Log In Now!",
+                                style: TextStyle(color: Colors.white, fontSize: 24)),
+                            padding: EdgeInsets.all(12),
+                            elevation: 5,
+                            color: Colors.blue,
+                            onPressed: () => authService.googleSignIn(),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+      }
     );
   }
 }
+
+
