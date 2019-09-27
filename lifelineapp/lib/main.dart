@@ -363,8 +363,9 @@ class MyAppMain extends State<MyApp> {
     );
   }
   _buildButton(tag) {
-    Color color = tag == activeTag ? Colors.purple : Colors.white;
-    return FlatButton(color: color, child: Text('#$tag'), onPressed: () => _queryDb(tag: tag));
+    Color bg_color = tag == activeTag ? Colors.blue : Colors.white;
+    Color txt_color = tag == activeTag ? Colors.white : Colors.blue;
+    return FlatButton(color: bg_color, child: Text('#$tag', style: TextStyle(color: txt_color),), onPressed: () => _queryDb(tag: tag));
   }
 
 
