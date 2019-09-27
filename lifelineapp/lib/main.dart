@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:lifelineapp/bottom_nav_bar.dart';
 import 'package:lifelineapp/resources/dimen.dart';
@@ -18,6 +20,10 @@ import 'package:lifelineapp/picture.dart';
 import 'package:lifelineapp/radio.dart';
 import 'package:lifelineapp/programs.dart';
 
+import 'package:lifelineapp/firestore_doc.dart';
+
+
+
 //import 'package:flare_splash_screen/flare_splash_screen.dart';
 
 void main() => runApp(MyApp());
@@ -31,13 +37,67 @@ class MyApp extends StatefulWidget {
 class MyAppMain extends State<MyApp> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final PageController ctrl = PageController();
+  //viewportFraction: 0.8
+  final Firestore db = Firestore.instance;
+  Stream slides;
 
-  //Video Header
+
   int _selectedVideoHeader = 1;
+  int _videoPause = 0;
+  int _likedVideo = 0;
+  int currentPage = 0;
+  String activeTag = "for you";
+
+  @override
+  void initState() {
+    _queryDb();
+    ctrl.addListener((){
+        int next = ctrl.page.round();
+        if(currentPage != next){
+          setState((){
+            currentPage = next;
+          });
+        }
+    });
+  }
+
+  Stream _queryDb({String tag = 'favourites'}){
+    
+    Query query = db.collection('stories').where('tags', arrayContains: tag);
+
+    slides = query.snapshots().map((list) => list.documents.map((doc) => doc.data));
+
+    // Update the active tag
+    setState(() {
+      activeTag = tag;
+    });
+
+  }
+
   void _onVideoHeader(int index) {
     setState(() {
       _selectedVideoHeader = index;
+
+      if(_selectedVideoHeader == 1){
+        _queryDb(tag: "following");
+      }else if(_selectedVideoHeader == 2){
+        _queryDb(tag: "for you");
+      }else if(_selectedVideoHeader == 3){
+        _queryDb(tag: "nearby");
+      }
+
       print(_selectedVideoHeader);
+    });
+  }
+  void _onVideoPause() {
+    setState(() {
+      print(_videoPause);
+    });
+  }
+  void _onVideoLike() {
+    setState(() {
+      print(_likedVideo);
     });
   }
 
@@ -53,34 +113,18 @@ class MyAppMain extends State<MyApp> {
         onPressed: () {
           _onVideoHeader(index);
           Fluttertoast.showToast(
-              msg: "You are watching '"+tooltip+"'",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIos: 1,
-              backgroundColor: Colors.blue,
-              textColor: Colors.white,
-              fontSize: 16.0
+            msg: "You are watching '"+tooltip+"'",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white,
+            fontSize: 16.0,
           );
         },
       ),
     );
   }
-
-  //Video Right Side
-  int _videoPause = 0;
-  void _onVideoPause() {
-    setState(() {
-      print(_videoPause);
-    });
-  }
-
-  int _likedVideo = 0;
-  void _onVideoLike() {
-    setState(() {
-      print(_likedVideo);
-    });
-  }
-
   Widget _buildVideoRightSide(BuildContext context, String text, IconData icon, String tooltip) {
 
     return new Padding(
@@ -157,6 +201,173 @@ class MyAppMain extends State<MyApp> {
     );
   }
 
+  Widget _buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('baby').snapshots(),
+      builder: (context, snapshot) {
+
+        if (!snapshot.hasData){
+          return LinearProgressIndicator();
+        }else{
+          return _buildList(context, snapshot.data.documents);
+        }
+      },
+    );
+  }
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return StreamBuilder(
+      stream: slides,
+      initialData: [],
+      builder: (context, AsyncSnapshot snap) {
+        List slideList = snap.data.toList();
+        return PageView.builder(
+            scrollDirection: Axis.vertical,
+            controller: ctrl,
+            itemCount: slideList.length + 1,
+            itemBuilder: (context, int currentIdx) {
+              if (currentIdx == 0) {
+                return _buildTagPage();
+              } else if (slideList.length >= currentIdx) {
+                // Active page
+                bool active = currentIdx == currentPage;
+                return _buildStoryPage(slideList[currentIdx - 1], active);
+              }
+            }
+        );
+      },
+    );
+  }
+
+  _buildStoryPage(Map data, bool active) {
+    // Animated Properties
+    /*
+    final double blur = active ? 30 : 0;
+    final double offset = active ? 20 : 0;
+    final double top = active ? 100 : 200;
+    */
+
+    /*
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOutQuint,
+      margin: EdgeInsets.only(top: top, bottom: 50, right: 30),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(data['img']),
+          ),
+          boxShadow: [BoxShadow(color: Colors.black87, blurRadius: blur, offset: Offset(offset, offset))]
+
+      ),
+      */
+
+      return Container(
+        color: Colors.black,
+        child: Stack(
+          children: <Widget>[
+            AppVideoPlayer(),
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Expanded(flex: 5, child: Container(
+                    padding: EdgeInsets.only(left: 16, bottom: 60),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 7, bottom: 7),
+                          child: Text(
+                            "@mcofie",
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 4, bottom: 7),
+                          child: Text(
+                              "Lorem ipsum dolor sit amet, consectetur "
+                                  "adipiscing elit, "
+                                  "sed do eiusmod tempor.",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300)),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.music_note,
+                              size: 19,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Lorem ipsum dolor sit amet ...",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  )),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 60, right: 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          //userProfile(),
+                          _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
+                          _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
+                          _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
+                          _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
+                          SpinnerAnimation(body: audioSpinner())
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+  _buildTagPage() {
+    return Container(
+        color: Colors.black,
+        child:
+
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      //crossAxisAlignment: CrossAxisAlignment.start,
+
+
+      children: [
+        Text('Life Line', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
+        Text('Filter Videos', style: TextStyle(color: Colors.white )),
+        _buildButton('following'),
+        _buildButton('for you'),
+        _buildButton('nearby')
+      ],
+    )
+    );
+  }
+  _buildButton(tag) {
+    Color color = tag == activeTag ? Colors.purple : Colors.white;
+    return FlatButton(color: color, child: Text('#$tag'), onPressed: () => _queryDb(tag: tag));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -179,88 +390,7 @@ class MyAppMain extends State<MyApp> {
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
-            PageView.builder(
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, position) {
-                  return Container(
-                    color: Colors.black,
-                    child: Stack(
-                      children: <Widget>[
-                        AppVideoPlayer(),
-                        Container(
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(flex: 5, child: Container(
-                                  padding: EdgeInsets.only(left: 16, bottom: 60),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 7, bottom: 7),
-                                        child: Text(
-                                          "@mcofie",
-                                          style: TextStyle(
-                                              fontSize: 14, color: Colors.white, fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 4, bottom: 7),
-                                        child: Text(
-                                            "Lorem ipsum dolor sit amet, consectetur "
-                                                "adipiscing elit, "
-                                                "sed do eiusmod tempor.",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300)),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.music_note,
-                                            size: 19,
-                                            color: Colors.white,
-                                          ),
-                                          Text(
-                                            "Lorem ipsum dolor sit amet ...",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.only(bottom: 60, right: 0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        //userProfile(),
-                                        _buildVideoRightSide(context,"profile",AppIcons.profile,"Profile"),
-                                        _buildVideoRightSide(context,"like",AppIcons.heart,"17.8k"),
-                                        _buildVideoRightSide(context,"comment",AppIcons.chat_bubble,"130"),
-                                        _buildVideoRightSide(context,"share",AppIcons.reply,"Share"),
-                                        SpinnerAnimation(body: audioSpinner())
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                },
-                itemCount: 10),
+            _buildBody(context),
             BottomNavigation(),
             Container(
               margin: EdgeInsets.only(top: 40),
@@ -721,6 +851,8 @@ Widget userProfile() {
     ),
   );
 }
+
+
 
 /*
 class menu extends StatelessWidget {
