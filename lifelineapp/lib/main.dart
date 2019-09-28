@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -346,8 +345,6 @@ class MyAppMain extends State<MyApp> {
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       //crossAxisAlignment: CrossAxisAlignment.start,
-
-
       children: [
         Text('Life Line', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
         Text('Filter Videos', style: TextStyle(color: Colors.white )),
