@@ -345,8 +345,6 @@ class MyAppMain extends State<MyApp> {
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
       //crossAxisAlignment: CrossAxisAlignment.start,
-
-
       children: [
         Text('Life Line', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
         Text('Filter Videos', style: TextStyle(color: Colors.white )),
