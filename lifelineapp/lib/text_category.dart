@@ -51,7 +51,7 @@ class TextCategoryState extends State<TextCategory>{
     });
   }
 
-  Stream _queryDb({String tag = 'favourites'}){
+  Stream _queryDb({String tag = 'following'}){
     Query query = db.collection('text').where('tags', arrayContains: tag);
     slides = query.snapshots().map((list) => list.documents.map((doc) => doc.data));
     setState(() {
@@ -85,7 +85,7 @@ class TextCategoryState extends State<TextCategory>{
         onPressed: () {
           _onVideoHeader(index);
           Fluttertoast.showToast(
-            msg: "You are watching '"+tooltip+"'",
+            msg: "You are reading '"+tooltip+"'",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIos: 1,
@@ -114,7 +114,7 @@ class TextCategoryState extends State<TextCategory>{
                 //_onVideoLike(1);
 
                 Fluttertoast.showToast(
-                    msg: "You liked this video",
+                    msg: "You liked this post",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIos: 1,
@@ -174,9 +174,8 @@ class TextCategoryState extends State<TextCategory>{
   }
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('baby').snapshots(),
+      stream: Firestore.instance.collection('text').snapshots(),
       builder: (context, snapshot) {
-
         if (!snapshot.hasData){
           return LinearProgressIndicator();
         }else{
@@ -211,21 +210,26 @@ class TextCategoryState extends State<TextCategory>{
       color: Colors.black,
       child: Stack(
         children: <Widget>[
-            Center(
+          Center(
               child: GestureDetector(
-                  child: Text(data['description'],
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 50),
+                      child: Text(data['description'],
+                      textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          backgroundColor: Colors.grey
-                      )
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                    ),
+
                   ),
               onTap: (){
 
               },
               onLongPress: (){
                 Fluttertoast.showToast(
-                    msg: "You tapped long on this video",
+                    msg: "You tapped long on this post",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIos: 1,
@@ -236,7 +240,7 @@ class TextCategoryState extends State<TextCategory>{
               },
               onDoubleTap: (){
                 Fluttertoast.showToast(
-                    msg: "You liked this video",
+                    msg: "You liked this post",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIos: 1,
@@ -308,22 +312,210 @@ class TextCategoryState extends State<TextCategory>{
               ),
             ],
           ),
-        )
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TextWrite(),
+                ),
+              );
+            }, //_showDialog
+            tooltip: 'Write New',
+            icon: Icon(Icons.add),
+            label: Text("Write New"),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        ),
+
       //,
     );
   }
 }
-class TextWrite extends StatelessWidget {
+
+
+class TextWrite extends StatefulWidget {
+  @override
+  TextWriteState createState() => new TextWriteState();
+}
+
+enum Answers{YES,NO,MAYBE}
+class TextWriteState extends State<TextWrite>{
+
+  final _formKey = GlobalKey<FormState>();
+
+  final myController = TextEditingController();
+
+  bool show_submit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    //myController.addListener(_printLatestValue);
+  }
+
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
+  _checkString() {
+    setState(() {
+      if(myController.text.length == 0){
+        show_submit = false;
+      }else{
+        show_submit = true;
+      }
+      print(show_submit);
+    });
+  }
+
+  String _value = '';
+
+  void _setValue(String value) => setState(() => _value = value);
+
+  final db = Firestore.instance;
+
+  Future < void > postText(text) async {
+    await db.collection("text").add({
+      'comment_count': "0",
+      'like_count': "0",
+      'share_count': "0",
+      'description': text,
+      'name': "@abbass",
+      'tags': ['following','for you','nearby',],
+      'uid': "UID",
+      'username': "@abbass",
+    }).then((documentReference) {
+      print(documentReference.documentID);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TextCategory(),
+        ),
+      );
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+
+
+  Future _askUser(String text) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Ready to post ?"),
+          content: new Text(text),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Post"),
+              onPressed: () {
+                postText(text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
         //leading: Icon(Icons.add),
-        title: new Text("Write Text"),
-        backgroundColor: Colors.black,
-      ),body: Center(
-
-    ),
+        title: new Text("Write New"),
+        backgroundColor: Colors.blue,
+      ),
+      body: Container(
+        color: Colors.black,
+        child: Center(
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  onChanged: (text) {
+                    _checkString();
+                    //print("First text field: $text");
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 10,
+                  cursorColor: Colors.white,
+                  controller: myController,
+                  autofocus: true,
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    labelText: "Write a new post:",
+                    labelStyle: TextStyle(color: Colors.grey, fontSize: 22),
+                    hintText: "Write something awesome..",
+                    hintStyle: TextStyle(color: Colors.grey, fontSize: 24),
+                  ),
+                ),
+              ),
+            )
+        ),
+      ),
+      floatingActionButton: show_submit ? FloatingActionButton.extended(
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            /*
+            return showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // Retrieve the text the user has entered by using the
+                  // TextEditingController.
+                  content: Text(myController.text, style: TextStyle(color: Colors.black),),
+                );
+              },
+            );
+            */
+            _askUser(myController.text);
+          }
+        },
+        tooltip: 'Write New',
+        icon: Icon(Icons.check),
+        label: Text("Save"),
+      ) : FloatingActionButton.extended(
+        backgroundColor: Colors.grey,
+        onPressed: () {
+          return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text("Please enter something to post!", style: TextStyle(color: Colors.black),),
+              );
+            },
+          );
+        },
+        tooltip: 'Write New',
+        icon: Icon(Icons.check),
+        label: Text("Save"),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

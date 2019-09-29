@@ -37,6 +37,7 @@ class MyAppMain extends State<MyApp> {
   final PageController ctrl = PageController(initialPage: 0);
 
   VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
 
   //viewportFraction: 0.8
   final Firestore db = Firestore.instance;
@@ -59,15 +60,8 @@ class MyAppMain extends State<MyApp> {
         });
       }
     });
-    super.initState();
-  }
 
-  void _nextPage(int delta) {
-    ctrl.animateToPage(
-        currentPage+delta,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.ease
-    );
+    super.initState();
   }
 
   @override
@@ -79,29 +73,31 @@ class MyAppMain extends State<MyApp> {
   void _handlePageChanged(int page) {
     setState(() {
 
-      if(_controller == null){
-        if(page > 0){
-          _controller = VideoPlayerController.asset("assets/videos/"+(page.toString())+".mp4")
-            ..initialize().then((_) {
-              _controller.play();
-              setState(() {
-                _controller.play();
-              });
-            });
-        }
-      }else{
-        if(_controller.value.isPlaying == true){
+      if(_controller != null) {
+        if(_controller.value.isPlaying){
           _controller.pause();
-        }else{
-          _controller.play();
         }
       }
 
+      _controller = VideoPlayerController.asset("assets/videos/" + (page.toString()) + ".mp4");
+
+      /*..initialize().then((_) {
+
+      });
+      */
+
+      _initializeVideoPlayerFuture = _controller.initialize();
+
+      _controller.setLooping(true);
+      _controller.setVolume(1);
+      _controller.play();
+
+      super.initState();
 
     });
   }
 
-  Stream _queryDb({String tag = 'favourites'}){
+  Stream _queryDb({String tag = 'following'}){
     
     Query query = db.collection('stories').where('tags', arrayContains: tag);
 
@@ -110,6 +106,7 @@ class MyAppMain extends State<MyApp> {
     // Update the active tag
     setState(() {
       activeTag = tag;
+
     });
 
   }
@@ -248,9 +245,8 @@ class MyAppMain extends State<MyApp> {
   }
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('baby').snapshots(),
+      stream: Firestore.instance.collection('stories').snapshots(),
       builder: (context, snapshot) {
-
         if (!snapshot.hasData){
           return LinearProgressIndicator();
         }else{
@@ -410,45 +406,74 @@ class MyAppMain extends State<MyApp> {
   }
 
   Widget backgroundVideo() {
-    return Center(
-      child: _controller != null
-          ? AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: GestureDetector(
-          onTap: (){
-            _onVideoTap();
-          },
-          onLongPress: (){
-            Fluttertoast.showToast(
-                msg: "You tapped long on this video",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          },
-          onDoubleTap: (){
-            Fluttertoast.showToast(
-                msg: "You liked this video",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          },
-          child: VideoPlayer(_controller),
-        ),
-      ) : Container(
-        color: Colors.black,
-      ),
+    return FutureBuilder(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: GestureDetector(
+              onTap: (){
+                _onVideoTap();
+              },
+              onLongPress: (){
+                _onNextVideoBounce();
+              },
+              onDoubleTap: (){
+                Fluttertoast.showToast(
+                    msg: "You liked this video",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 1,
+                    backgroundColor: Colors.blue,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              },
+              child: VideoPlayer(_controller),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      }
     );
   }
 
+  Future < void > postVideo() async {
+    await db.collection("stories").add({
+      'comment_count': "0",
+      'like_count': "0",
+      'share_count': "0",
+      'description': "Some text here for this video",
+      'music': "Balay Balay Chawa Chawa",
+      'name': "@abbass",
+      'tags': ['following','for you','nearby',],
+      'uid': "UID",
+      'username': "@abbass",
+      'video': "1.mp4",
+    }).then((documentReference) {
+      print(documentReference.documentID);
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
+  void _onNextVideo() {
+    ctrl.animateToPage(
+        currentPage+1,
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.ease
+    );
+  }
+
+  void _onNextVideoBounce() {
+    ctrl.animateToPage(
+        currentPage+1,
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.easeInOutCubic
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -469,7 +494,7 @@ class MyAppMain extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       //theme: ThemeData.dark(),
       home: Scaffold(
-        key: _scaffoldKey,
+        //key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
             _buildBody(context),
@@ -487,11 +512,37 @@ class MyAppMain extends State<MyApp> {
                   _buildVideoHeader(2,Icons.notifications,"For You"),
                   Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
                   _buildVideoHeader(3,Icons.location_on,"Near By"),
+
+                  Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
+                Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: IconButton(
+                    icon: new Icon(Icons.skip_next,
+                      size:36,
+                    ),
+                    tooltip: "Next",
+                    color: Colors.white,
+                    onPressed: () {
+                      _onNextVideo();
+                    },
+                  ),
+                )
                 ],
               ),
             ),
           ],
         ),
+          /*
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+                postVideo();
+            },
+            tooltip: 'Write New',
+            icon: Icon(Icons.check),
+            label: Text("Save"),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          */
       )
       //,
     );
