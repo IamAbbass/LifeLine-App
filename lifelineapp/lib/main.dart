@@ -19,9 +19,9 @@ import 'package:lifelineapp/picture.dart';
 import 'package:lifelineapp/radio.dart';
 import 'package:lifelineapp/programs.dart';
 
+import 'package:lifelineapp/text_category.dart';
+
 import 'package:lifelineapp/firestore_doc.dart';
-
-
 
 //import 'package:flare_splash_screen/flare_splash_screen.dart';
 
@@ -31,16 +31,17 @@ class MyApp extends StatefulWidget {
   @override
   MyAppMain createState() => new MyAppMain();
 }
-
-//Videos
 class MyAppMain extends State<MyApp> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final PageController ctrl = PageController();
+  final PageController ctrl = PageController(initialPage: 0);
+
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
+
   //viewportFraction: 0.8
   final Firestore db = Firestore.instance;
   Stream slides;
-
 
   int _selectedVideoHeader = 1;
   int _videoPause = 0;
@@ -52,16 +53,51 @@ class MyAppMain extends State<MyApp> {
   void initState() {
     _queryDb();
     ctrl.addListener((){
-        int next = ctrl.page.round();
-        if(currentPage != next){
-          setState((){
-            currentPage = next;
-          });
+      int next = ctrl.page.round();
+      if(currentPage != next){
+        setState((){
+          currentPage = next;
+        });
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  void _handlePageChanged(int page) {
+    setState(() {
+
+      if(_controller != null) {
+        if(_controller.value.isPlaying){
+          _controller.pause();
         }
+      }
+
+      _controller = VideoPlayerController.asset("assets/videos/" + (page.toString()) + ".mp4");
+
+      /*..initialize().then((_) {
+
+      });
+      */
+
+      _initializeVideoPlayerFuture = _controller.initialize();
+
+      _controller.setLooping(true);
+      _controller.setVolume(1);
+      _controller.play();
+
+      super.initState();
+
     });
   }
 
-  Stream _queryDb({String tag = 'favourites'}){
+  Stream _queryDb({String tag = 'following'}){
     
     Query query = db.collection('stories').where('tags', arrayContains: tag);
 
@@ -70,6 +106,7 @@ class MyAppMain extends State<MyApp> {
     // Update the active tag
     setState(() {
       activeTag = tag;
+
     });
 
   }
@@ -85,8 +122,6 @@ class MyAppMain extends State<MyApp> {
       }else if(_selectedVideoHeader == 3){
         _queryDb(tag: "nearby");
       }
-
-      print(_selectedVideoHeader);
     });
   }
   void _onVideoPause() {
@@ -97,6 +132,15 @@ class MyAppMain extends State<MyApp> {
   void _onVideoLike() {
     setState(() {
       print(_likedVideo);
+    });
+  }
+  void _onVideoTap() {
+    setState(() {
+      if(_controller.value.isPlaying){
+        _controller.pause();
+      }else{
+        _controller.play();
+      }
     });
   }
 
@@ -201,14 +245,14 @@ class MyAppMain extends State<MyApp> {
   }
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('baby').snapshots(),
+      stream: Firestore.instance.collection('stories').snapshots(),
       builder: (context, snapshot) {
-
         if (!snapshot.hasData){
           return LinearProgressIndicator();
         }else{
           return _buildList(context, snapshot.data.documents);
         }
+
       },
     );
   }
@@ -221,12 +265,12 @@ class MyAppMain extends State<MyApp> {
         return PageView.builder(
             scrollDirection: Axis.vertical,
             controller: ctrl,
+            onPageChanged: _handlePageChanged,
             itemCount: slideList.length + 1,
             itemBuilder: (context, int currentIdx) {
               if (currentIdx == 0) {
                 return _buildTagPage();
               } else if (slideList.length >= currentIdx) {
-                // Active page
                 bool active = currentIdx == currentPage;
                 return _buildStoryPage(slideList[currentIdx - 1], active);
               }
@@ -265,7 +309,7 @@ class MyAppMain extends State<MyApp> {
         color: Colors.black,
         child: Stack(
           children: <Widget>[
-            AppVideoPlayer(),
+            backgroundVideo(),
             Container(
               child: Row(
                 children: <Widget>[
@@ -361,6 +405,75 @@ class MyAppMain extends State<MyApp> {
     return FlatButton(color: bg_color, child: Text('#$tag', style: TextStyle(color: txt_color),), onPressed: () => _queryDb(tag: tag));
   }
 
+  Widget backgroundVideo() {
+    return FutureBuilder(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: GestureDetector(
+              onTap: (){
+                _onVideoTap();
+              },
+              onLongPress: (){
+                _onNextVideoBounce();
+              },
+              onDoubleTap: (){
+                Fluttertoast.showToast(
+                    msg: "You liked this video",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 1,
+                    backgroundColor: Colors.blue,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              },
+              child: VideoPlayer(_controller),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      }
+    );
+  }
+
+  Future < void > postVideo() async {
+    await db.collection("stories").add({
+      'comment_count': "0",
+      'like_count': "0",
+      'share_count': "0",
+      'description': "Some text here for this video",
+      'music': "Balay Balay Chawa Chawa",
+      'name': "@abbass",
+      'tags': ['following','for you','nearby',],
+      'uid': "UID",
+      'username': "@abbass",
+      'video': "1.mp4",
+    }).then((documentReference) {
+      print(documentReference.documentID);
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void _onNextVideo() {
+    ctrl.animateToPage(
+        currentPage+1,
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.ease
+    );
+  }
+
+  void _onNextVideoBounce() {
+    ctrl.animateToPage(
+        currentPage+1,
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.easeInOutCubic
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -381,7 +494,7 @@ class MyAppMain extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       //theme: ThemeData.dark(),
       home: Scaffold(
-        key: _scaffoldKey,
+        //key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
             _buildBody(context),
@@ -399,11 +512,37 @@ class MyAppMain extends State<MyApp> {
                   _buildVideoHeader(2,Icons.notifications,"For You"),
                   Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
                   _buildVideoHeader(3,Icons.location_on,"Near By"),
+
+                  Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
+                Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: IconButton(
+                    icon: new Icon(Icons.skip_next,
+                      size:36,
+                    ),
+                    tooltip: "Next",
+                    color: Colors.white,
+                    onPressed: () {
+                      _onNextVideo();
+                    },
+                  ),
+                )
                 ],
               ),
             ),
           ],
         ),
+          /*
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+                postVideo();
+            },
+            tooltip: 'Write New',
+            icon: Icon(Icons.check),
+            label: Text("Save"),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          */
       )
       //,
     );
@@ -616,175 +755,7 @@ class PlusVideo extends StatelessWidget {
     );
   }
 }
-class TextCategory extends StatefulWidget {
-  @override
-  TextCategoryState createState() => new TextCategoryState();
-}
-class TextCategoryState extends State<TextCategory>{
-  int listItemCount = 3;
 
-  void _showBottom(){
-    showModalBottomSheet<void>(
-        context: context,
-        /*bottom sheet is like a drawer that pops off where you can put any
-      controls you want, it is used typically for user notifications*/
-        //builder lets your code generate the code
-        builder: (BuildContext context){
-          return new Container(
-            padding: new EdgeInsets.all(15.0),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text('Please Login To Share', style: new TextStyle(color: Colors.white),),
-                //new Button(context: Text('Please Login To Share')),
-                //new RaisedButton(onPressed: () => Navigator.pop(context), child: new Text('Close'),)
-              ],
-            ),
-          );
-        }
-    );
-  }
-
-  @override
-  Widget build(BuildContext context){
-    return new Scaffold(
-        appBar: new AppBar(
-            title: new Text("Text Category"),
-            backgroundColor: Colors.blue,
-            actions: <Widget>[
-                // action button
-                IconButton(
-                icon: Icon(Icons.share),
-                onPressed: () {
-                  _showBottom();
-                },
-            ),]
-        ),
-        body: PageView.builder(
-          scrollDirection: Axis.vertical,
-          //pageSnapping: false,
-          itemBuilder: (context, position) {
-            return Container(
-              padding: new EdgeInsets.all(32.0),
-              child: new Center(
-                child: new Text(
-                    'Hello, world!',
-                    style: TextStyle(fontSize: 36, color: Colors.white)
-                ),
-              ),
-              //color: position % 2 == 0 ? Colors.black : Colors.white,
-              color: Colors.blue,
-            );
-          },
-        ),
-      floatingActionButton: FloatingActionButton.extended(
-            onPressed: (){
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => TextWrite()));
-            },
-            tooltip: 'Increment',
-            label: Text("Write"),
-            icon: Icon(Icons.add),
-            heroTag: "demoValue",
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
-    );
-  }
-}
-class TextWrite extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-          //leading: Icon(Icons.add),
-          title: new Text("Write Text"),
-          backgroundColor: Colors.black,
-      ),body: Center(
-
-      ),
-    );
-  }
-}
-class AppVideoPlayer extends StatefulWidget {
-
-  final String video_path;
-
-  const AppVideoPlayer({Key key, this.video_path}): super(key: key);
-
-  @override
-  _AppVideoPlayerState createState() => _AppVideoPlayerState();
-}
-class _AppVideoPlayerState extends State<AppVideoPlayer> {
-
-  VideoPlayerController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.asset('assets/videos/1.mp4')
-    ..initialize().then((_) {
-      _controller.play();
-      setState(() {});
-    });
-  }
-
-  void _onVideoTap() {
-    setState(() {
-      if(_controller.value.isPlaying){
-        _controller.pause();
-      }else{
-        _controller.play();
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print(widget.video_path);
-    return Center(
-      child: _controller.value.initialized
-          ? AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: GestureDetector(
-          onTap: (){
-            _onVideoTap();
-          },
-          onLongPress: (){
-            Fluttertoast.showToast(
-                msg: "You tapped long on this video",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          },
-          onDoubleTap: (){
-            Fluttertoast.showToast(
-                msg: "You liked this video",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          },
-          child: VideoPlayer(_controller),
-        ),
-      ) : Container(
-        color: Colors.black,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-}
 
 Widget userProfile() {
   return Padding(
