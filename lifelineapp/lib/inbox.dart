@@ -46,13 +46,35 @@ class FriendsListPage extends StatefulWidget {
   @override
   _FriendsListPageState createState() => new _FriendsListPageState();
 }
-class _FriendsListPageState extends State<FriendsListPage> {
+class _FriendsListPageState extends State<FriendsListPage> with SingleTickerProviderStateMixin {
   List<Friend> _friends = [];
+
+  TabController _tabController;
+
+  int _currentIndex = 1;
 
   @override
   void initState() {
     super.initState();
     _loadFriends();
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+
+  _handleTabSelection() {
+    setState(() {
+      _currentIndex = _tabController.index;
+
+      print(_currentIndex);
+    });
+  }
+
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadFriends() async {
@@ -93,6 +115,47 @@ class _FriendsListPageState extends State<FriendsListPage> {
   }
 
 
+  Widget _bottomButtons() {
+    if(_currentIndex == 0) {
+      return FloatingActionButton(
+          shape: StadiumBorder(),
+          onPressed: null,
+          backgroundColor: Colors.blue,
+          child: Icon(
+            Icons.perm_contact_calendar,
+            size: 20.0,
+          ));
+    }else if(_currentIndex == 1) {
+      return FloatingActionButton(
+          shape: StadiumBorder(),
+          onPressed: null,
+          backgroundColor: Colors.redAccent,
+          child: Icon(
+            Icons.message,
+            size: 20.0,
+          ));
+    }else if(_currentIndex == 2) {
+      return FloatingActionButton(
+          shape: StadiumBorder(),
+          onPressed: null,
+          backgroundColor: Colors.purple,
+          child: Icon(
+            Icons.group,
+            size: 20.0,
+          ));
+    }else if(_currentIndex == 3) {
+      return FloatingActionButton(
+          shape: StadiumBorder(),
+          onPressed: null,
+          backgroundColor: Colors.orange,
+          child: Icon(
+            Icons.phone_in_talk,
+            size: 20.0,
+          ));
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content;
@@ -108,8 +171,39 @@ class _FriendsListPageState extends State<FriendsListPage> {
       );
     }
     return new Scaffold(
-      appBar: new AppBar(title: new Text('Inbox')),
-      body: content,
+      //appBar: new AppBar(title: new Text('Inbox')),
+      body: DefaultTabController(
+        // The number of tabs / content sections to display.
+          length: 4,
+          child: Scaffold(
+            appBar: AppBar(
+              title: new Text('Inbox'),
+              backgroundColor: _currentIndex == 0 ? Colors.blue
+                  : _currentIndex == 1 ? Colors.redAccent
+                  : _currentIndex == 2 ? Colors.purple
+                  : _currentIndex == 3 ? Colors.orange : Colors.blue,
+              bottom: TabBar(
+                  controller: _tabController,
+                tabs: [
+                  Tab(icon: Icon(Icons.perm_contact_calendar), text: "People",),
+                  Tab(icon: Icon(Icons.message), text: "Chat",),
+                  Tab(icon: Icon(Icons.group), text: "Groups"),
+                  Tab(icon: Icon(Icons.phone_in_talk), text: "Discussion"),
+                ],
+              ),
+            ),
+            body: TabBarView(controller: _tabController,
+              children: [
+                content,
+                Icon(Icons.message),
+                Icon(Icons.group),
+                Icon(Icons.phone_in_talk),
+              ],
+            ),
+            floatingActionButton: _bottomButtons(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          ),
+      ),
     );
   }
 }

@@ -410,27 +410,29 @@ class MyAppMain extends State<MyApp> {
       future: _initializeVideoPlayerFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: GestureDetector(
-              onTap: (){
-                _onVideoTap();
-              },
-              onLongPress: (){
-                _onNextVideoBounce();
-              },
-              onDoubleTap: (){
-                Fluttertoast.showToast(
-                    msg: "You liked this video",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIos: 1,
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white,
-                    fontSize: 16.0
-                );
-              },
-              child: VideoPlayer(_controller),
+          return Center(
+            child: AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: GestureDetector(
+                onTap: (){
+                  _onVideoTap();
+                },
+                onLongPress: (){
+                  _onNextVideoBounce();
+                },
+                onDoubleTap: (){
+                  Fluttertoast.showToast(
+                      msg: "You liked this video",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                },
+                child: VideoPlayer(_controller),
+              ),
             ),
           );
         } else {
@@ -683,12 +685,8 @@ class Menu extends StatelessWidget {
                 }else if(index == 14){ //Video Page
                   Navigator.pushNamed(context, '/Inbox');
                 }
-
-
-
                 else{
                   //ToDo
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
