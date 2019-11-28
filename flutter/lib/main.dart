@@ -179,6 +179,8 @@ class MyAppMain extends State<MyApp> {
               color: _likedVideo == 0 ? Colors.white : Colors.red,
               size: 35,),
               onTap: (){
+                print(text);
+
                 if(text == "profile"){
                   Navigator.of(context).pushNamed("/Profile");
                 }else if(text == "like"){
@@ -263,17 +265,18 @@ class MyAppMain extends State<MyApp> {
       builder: (context, AsyncSnapshot snap) {
         List slideList = snap.data.toList();
         return PageView.builder(
+            pageSnapping: true,
             scrollDirection: Axis.vertical,
             controller: ctrl,
             onPageChanged: _handlePageChanged,
-            itemCount: slideList.length + 1,
+            itemCount: slideList.length, //+1
             itemBuilder: (context, int currentIdx) {
-              if (currentIdx == 0) {
-                return _buildTagPage();
-              } else if (slideList.length >= currentIdx) {
+              //if (currentIdx == 0) {
+                //return _buildTagPage();
+              //} else if (slideList.length >= currentIdx) {
                 bool active = currentIdx == currentPage;
-                return _buildStoryPage(slideList[currentIdx - 1], active);
-              }
+                return _buildStoryPage(slideList[currentIdx], active); //-1
+              //}
             }
         );
       },
@@ -515,20 +518,22 @@ class MyAppMain extends State<MyApp> {
                   Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
                   _buildVideoHeader(3,Icons.location_on,"Near By"),
 
-                  Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
-                Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: IconButton(
-                    icon: new Icon(Icons.skip_next,
-                      size:36,
+                  //Text("|",style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
+                  /*
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: IconButton(
+                      icon: new Icon(Icons.skip_next,
+                        size:36,
+                      ),
+                      tooltip: "Next",
+                      color: Colors.white,
+                      onPressed: () {
+                        _onNextVideo();
+                      },
                     ),
-                    tooltip: "Next",
-                    color: Colors.white,
-                    onPressed: () {
-                      _onNextVideo();
-                    },
-                  ),
-                )
+                  )
+                  */
                 ],
               ),
             ),
